@@ -47,8 +47,9 @@ const params = new URLSearchParams(window.location.search);
       <label>
         Episode:
         <select id="episode-select">
-          ${Array.from({length: episodeCount}, (_, i) => `<option value="${i+1}">Episode ${i+1}</option>`).join('')}
-        </select>
+  ${Array.from({length: episodeCount}, (_, i) => `<option value="${i+1}">Episode ${i+1}</option>`).join('')}
+</select>
+
       </label>
 
       <label>
