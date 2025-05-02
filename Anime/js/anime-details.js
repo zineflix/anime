@@ -69,21 +69,21 @@ const params = new URLSearchParams(window.location.search);
 
         // Initial stream
         function updateStream() {
-          const ep = document.getElementById('episode-select').value;
-          const dub = document.getElementById('dub-select').value;
-          const provider = document.getElementById('provider-select').value;
-          const frame = document.getElementById('stream-frame');
+  const ep = document.getElementById('episode-select').value;
+  const dub = document.getElementById('dub-select').value;
+  const provider = document.getElementById('provider-select').value;
+  const frame = document.getElementById('stream-frame');
 
-          let src = "";
-          if (provider === "videasy") {
-            src = `https://player.videasy.net/anime/${anime.id}/${ep}?dub=${dub}`;
-          } else {
-            const subType = dub === "true" ? "dub" : "sub";
-src = `https://vidsrc.cc/v2/embed/anime/${anime.id}/${ep}/${subType}`;
+  let src = "";
+  if (provider === "videasy") {
+    src = `https://player.videasy.net/anime/${anime.id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
+  } else {
+    const subType = dub === "true" ? "dub" : "sub";
+    src = `https://vidsrc.cc/v2/embed/anime/${anime.id}/${ep}/${subType}`;
+  }
+  frame.src = src;
+}
 
-          }
-          frame.src = src;
-        }
 
         // Attach change events
         document.getElementById('episode-select').addEventListener('change', updateStream);
@@ -93,7 +93,7 @@ src = `https://vidsrc.cc/v2/embed/anime/${anime.id}/${ep}/${subType}`;
         updateStream(); // initial call
       })
       .catch(err => {
-        console.error(err);
-        container.innerHTML = "<p>Failed to load anime details.</p>";
+        console.error("Anime fetch error:", err);
+container.innerHTML = `<p>Failed to load anime details. Please try again later.</p>`;
       });
     }
