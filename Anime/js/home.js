@@ -55,11 +55,11 @@ const year = yearValue ? parseInt(yearValue) : null;
       const card = document.createElement('div');
       card.className = 'anime-card';
       card.innerHTML = `
-        <img src="${anime.coverImage.large}" alt="${anime.title.english || anime.title.romaji}">
-        <h2>${anime.title.english || anime.title.romaji}</h2>
-        <!-- Remove this line entirely -->
- 
-      `;
+  <a href="anime-details.html?id=${anime.id}" style="color: inherit; text-decoration: none;">
+    <img src="${anime.coverImage.large}" alt="${anime.title.english || anime.title.romaji}">
+    <h2>${anime.title.english || anime.title.romaji}</h2>
+  </a>
+`;
       list.appendChild(card);
     });
   })
