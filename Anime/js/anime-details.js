@@ -64,7 +64,7 @@ const params = new URLSearchParams(window.location.search);
             </label>
           </div>
 
-          <iframe id="stream-frame" src=""></iframe>
+          <iframe id="stream-frame" src="" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media"></iframe>
         `;
 
         // Initial stream
