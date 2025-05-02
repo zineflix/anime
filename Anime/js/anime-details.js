@@ -78,7 +78,9 @@ const params = new URLSearchParams(window.location.search);
           if (provider === "videasy") {
             src = `https://player.videasy.net/anime/${anime.id}/${ep}?dub=${dub}`;
           } else {
-            src = `https://vidsrc.cc/v2/embed/anime/${anime.id}/${ep}/${dub === "true" ? "dub" : "sub"}`;
+            const subType = dub === "true" ? "dub" : "sub";
+src = `https://vidsrc.cc/v2/embed/anime/${anime.id}/${ep}/${subType}`;
+
           }
           frame.src = src;
         }
