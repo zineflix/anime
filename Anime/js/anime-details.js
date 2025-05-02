@@ -2,12 +2,15 @@ const params = new URLSearchParams(window.location.search);
     const animeId = params.get("id");
     const container = document.getElementById("anime-detail");
 
+    const maxEpisodes = 24; // adjust or fetch dynamically if available
+
     if (!animeId) {
       container.innerHTML = "<p>No anime ID provided.</p>";
     } else {
       const query = `
         query ($id: Int) {
           Media(id: $id, type: ANIME) {
+            id
             title {
               romaji
               english
@@ -16,16 +19,6 @@ const params = new URLSearchParams(window.location.search);
               large
             }
             description(asHtml: false)
-            characters(perPage: 8, sort: [ROLE, RELEVANCE]) {
-              nodes {
-                name {
-                  full
-                }
-                image {
-                  large
-                }
-              }
-            }
           }
         }
       `;
@@ -38,41 +31,64 @@ const params = new URLSearchParams(window.location.search);
       .then(res => res.json())
       .then(data => {
         const anime = data.data.Media;
+        const displayTitle = anime.title.english || anime.title.romaji;
+
         container.innerHTML = `
-          <h1>${anime.title.english || anime.title.romaji}</h1>
-          <img src="${anime.coverImage.large}" alt="${anime.title.english || anime.title.romaji}">
+          <h1>${displayTitle}</h1>
+          <img src="${anime.coverImage.large}" alt="${displayTitle}">
           <p>${anime.description || "No description available."}</p>
-          <h2>Characters</h2>
-          <div class="character-grid" id="characters">
-            ${anime.characters.nodes.map(char => `
-              <div class="character-card">
-                <img src="${char.image.large}" alt="${char.name.full}">
-                <div>${char.name.full}</div>
-              </div>
-            `).join('')}
+          
+          <h2>Watch Anime</h2>
+          <div class="controls">
+            <label>
+              Episode:
+              <select id="episode-select">
+                ${Array.from({length: maxEpisodes}, (_, i) => `<option value="${i+1}">Episode ${i+1}</option>`).join('')}
+              </select>
+            </label>
+
+            <label>
+              Dub:
+              <select id="dub-select">
+                <option value="false">Sub</option>
+                <option value="true">Dub</option>
+              </select>
+            </label>
+
+            <label>
+              Provider:
+              <select id="provider-select">
+                <option value="videasy">Videasy</option>
+                <option value="vidsrc">VidSrc</option>
+              </select>
+            </label>
           </div>
-          <div class="episodes">
-            <h2>Episodes</h2>
-            <div id="episode-list"></div>
-            <button id="load-more">Load More Episodes</button>
-          </div>
+
+          <iframe id="stream-frame" src=""></iframe>
         `;
 
-        // Simulated episode loading
-        let episodeCount = 0;
-        document.getElementById('load-more').addEventListener('click', () => {
-          const list = document.getElementById('episode-list');
-          for (let i = 1; i <= 5; i++) {
-            episodeCount++;
-            const ep = document.createElement('div');
-            ep.className = 'episode';
-            ep.textContent = `Episode ${episodeCount}: Placeholder title`;
-            list.appendChild(ep);
-          }
-        });
+        // Initial stream
+        function updateStream() {
+          const ep = document.getElementById('episode-select').value;
+          const dub = document.getElementById('dub-select').value;
+          const provider = document.getElementById('provider-select').value;
+          const frame = document.getElementById('stream-frame');
 
-        // Auto-load first 5
-        document.getElementById('load-more').click();
+          let src = "";
+          if (provider === "videasy") {
+            src = `https://player.videasy.net/anime/${anime.id}/${ep}?dub=${dub}`;
+          } else {
+            src = `https://vidsrc.cc/v2/embed/anime/${anime.id}/${ep}/${dub === "true" ? "dub" : "sub"}`;
+          }
+          frame.src = src;
+        }
+
+        // Attach change events
+        document.getElementById('episode-select').addEventListener('change', updateStream);
+        document.getElementById('dub-select').addEventListener('change', updateStream);
+        document.getElementById('provider-select').addEventListener('change', updateStream);
+
+        updateStream(); // initial call
       })
       .catch(err => {
         console.error(err);
