@@ -34,38 +34,45 @@ const params = new URLSearchParams(window.location.search);
         const displayTitle = anime.title.english || anime.title.romaji;
 
         container.innerHTML = `
-          <h1>${displayTitle}</h1>
-          <img src="${anime.coverImage.large}" alt="${displayTitle}">
-          <p>${anime.description || "No description available."}</p>
-          
-          <h2>Watch Anime</h2>
-          <div class="controls">
-            <label>
-              Episode:
-              <select id="episode-select">
-                ${Array.from({length: maxEpisodes}, (_, i) => `<option value="${i+1}">Episode ${i+1}</option>`).join('')}
-              </select>
-            </label>
+  <h1 class="anime-title">${displayTitle}</h1>
+  <div class="anime-content">
+    <div class="anime-image">
+      <img src="${anime.coverImage.large}" alt="${displayTitle}">
+    </div>
+    <div class="anime-description">
+      <p>${anime.description || "No description available."}</p>
+    </div>
+  </div>
 
-            <label>
-              Dub:
-              <select id="dub-select">
-                <option value="false">Sub</option>
-                <option value="true">Dub</option>
-              </select>
-            </label>
+  <h2>Watch Anime</h2>
+  <div class="controls">
+    <label>
+      Episode:
+      <select id="episode-select">
+        ${Array.from({length: maxEpisodes}, (_, i) => `<option value="${i+1}">Episode ${i+1}</option>`).join('')}
+      </select>
+    </label>
 
-            <label>
-              Provider:
-              <select id="provider-select">
-                <option value="videasy">Videasy</option>
-                <option value="vidsrc">VidSrc</option>
-              </select>
-            </label>
-          </div>
+    <label>
+      Dub:
+      <select id="dub-select">
+        <option value="false">Sub</option>
+        <option value="true">Dub</option>
+      </select>
+    </label>
 
-          <iframe id="stream-frame" src="" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin"></iframe>
-        `;
+    <label>
+      Provider:
+      <select id="provider-select">
+        <option value="videasy">Videasy</option>
+        <option value="vidsrc">VidSrc</option>
+      </select>
+    </label>
+  </div>
+
+  <iframe id="stream-frame" src="" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin"></iframe>
+`;
+
 
         // Initial stream
         function updateStream() {
