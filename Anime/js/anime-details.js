@@ -48,6 +48,7 @@ if (!animeId) {
             <select id="provider-select">
               <option value="vidsrc" selected>VidSrc</option>
               <option value="videasy">Videasy</option>
+              <option value="vidsrc-icu">VidSrc ICU</option>
             </select>
           </label>
         </div>
@@ -57,22 +58,27 @@ if (!animeId) {
 
       // Streaming setup
       function updateStream() {
-        const ep = document.getElementById('episode-select').value;
-        const dub = document.getElementById('dub-select').value;
-        const provider = document.getElementById('provider-select').value;
-        const frame = document.getElementById('stream-frame');
+  const ep = document.getElementById('episode-select').value;
+  const dub = document.getElementById('dub-select').value;
+  const provider = document.getElementById('provider-select').value;
+  const frame = document.getElementById('stream-frame');
 
-        let src = "";
-        const subType = dub === "true" ? "dub" : "sub";
+  let src = "";
+  const subType = dub === "true" ? "dub" : "sub";
 
-        if (provider === "vidsrc") {
-          src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
-        } else {
-          src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
-        }
+  if (provider === "vidsrc") {
+    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
+  } else if (provider === "videasy") {
+    src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
+  } else if (provider === "vidsrc-icu") {
+    // vidsrc.icu format: /anime/{id}/{episode}/{dub}/{skip}
+    // Assuming skip is always false for simplicity
+    src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${subType}/false`;
+  }
 
-        frame.src = src;
-      }
+  frame.src = src;
+}
+
 
       // Attach event listeners
       document.getElementById('episode-select').addEventListener('change', updateStream);
