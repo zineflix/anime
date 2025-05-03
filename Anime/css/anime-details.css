@@ -11,6 +11,28 @@ body {
       padding: 1.5rem;
       border-radius: 10px;
     }
+    .anime-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.anime-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.anime-image {
+  flex: 1 1 40%;
+}
+
+.anime-description {
+  flex: 1 1 55%;
+}
+
+
     img {
       width: 100%;
       border-radius: 10px;
