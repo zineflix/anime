@@ -35,16 +35,17 @@ const params = new URLSearchParams(window.location.search);
 
         container.innerHTML = `
   <div class="anime-content">
-  <div class="anime-left">
+  <div class="anime-image">
+    <img src="${anime.coverImage.large}" alt="${displayTitle}">
+  </div>
+  <div class="anime-info">
     <h1 class="anime-title">${displayTitle}</h1>
-    <div class="anime-image">
-      <img src="${anime.coverImage.large}" alt="${displayTitle}">
+    <div class="anime-description">
+      <p>${anime.description || "No description available."}</p>
     </div>
   </div>
-  <div class="anime-description">
-    <p>${anime.description || "No description available."}</p>
-  </div>
 </div>
+
 
   <h2>Watch Anime</h2>
   <div class="controls">
