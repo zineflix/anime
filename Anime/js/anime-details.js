@@ -48,7 +48,8 @@ if (!animeId) {
             <select id="provider-select">
               <option value="vidsrc" selected>VidSrc</option>
               <option value="vidsrc-icu">VidSrc ICU</option>
-              <option value="videasy">Videasy</option>
+              <option value="vidsrc-co">VidSrc CO</option>
+              <option value="videasy">Videasy</option>      
             </select>
           </label>
         </div>
@@ -73,9 +74,11 @@ if (!animeId) {
     const dubFlag = dub === "true" ? "1" : "0";
     const skipFlag = "1"; // You can make this dynamic too
     src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/${skipFlag}`;
+  } else if (provider === "vidsrc-co") {
+    src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}`;
   } else if (provider === "videasy") {
     src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
-  }
+  } 
 
   console.log("Iframe source URL:", src); // Debug
   frame.src = src;
