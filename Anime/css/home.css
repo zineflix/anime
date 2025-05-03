@@ -341,3 +341,10 @@ main#anime-list {
 }
 /* Footer Section End*/
 
+/* Poster Mobile Display Start */
+@media (max-width: 600px) {
+  main#anime-list {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+  }
+}
+/* Poster Mobile Display End */
