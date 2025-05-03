@@ -18,17 +18,17 @@ body {
 }
 
 .anime-content {
+  display: flex;
+  gap: 2rem;
   align-items: flex-start;
 }
 
-.anime-image img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+.anime-image {
+  flex: 0 0 300px;
 }
 
 .anime-description {
-  max-width: 600px;
+  flex: 1;
 }
 
 
