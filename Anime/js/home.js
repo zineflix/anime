@@ -4,7 +4,7 @@ function fetchAnime() {
   const year = document.getElementById('year-select').value;
   const genre = document.getElementById('genre-select').value;
 
-  let url = `https://api.jikan.moe/v4/anime?order_by=popularity&sort=desc&limit=20`;
+  let url = `https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=20`;
 
   if (year) {
     url += `&start_date=${year}-01-01&end_date=${year}-12-31`;
