@@ -65,12 +65,13 @@ const params = new URLSearchParams(window.location.search);
     </label>
 
     <label>
-      Provider:
-      <select id="provider-select">
-        <option value="videasy">Videasy</option>
-        <option value="vidsrc">VidSrc</option>
-      </select>
-    </label>
+  Provider:
+  <select id="provider-select">
+    <option value="vidsrc" selected>VidSrc</option>
+    <option value="videasy">Videasy</option>
+  </select>
+</label>
+
   </div>
 
   <iframe id="stream-frame" src="" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin"></iframe>
@@ -85,14 +86,17 @@ const params = new URLSearchParams(window.location.search);
   const frame = document.getElementById('stream-frame');
 
   let src = "";
-  if (provider === "vidsrc") {  // switched from videasy to vidsrc
-    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.id}/${ep}/${subType}?autoPlay=true`;    
+  const subType = dub === "true" ? "dub" : "sub";
+
+  if (provider === "vidsrc") {
+    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.id}/${ep}/${subType}?autoPlay=true`;
   } else {
-    const subType = dub === "true" ? "dub" : "sub";
     src = `https://player.videasy.net/anime/${anime.id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   }
+
   frame.src = src;
 }
+
 
 
 
