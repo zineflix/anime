@@ -2,14 +2,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
-      background: #0d0d0d;
-      color: white;
-      font-family: Arial, sans-serif;
-
-    }
+    background-color: #0d0d0d;
+    color: #fff;
+}
     .anime-detail {
       max-width: 900px;
       margin: auto;
