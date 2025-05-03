@@ -86,10 +86,10 @@ const params = new URLSearchParams(window.location.search);
 
   let src = "";
   if (provider === "vidsrc") {  // switched from videasy to vidsrc
-    src = `https://player.videasy.net/anime/${anime.id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
+    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.id}/${ep}/${subType}?autoPlay=true`;    
   } else {
     const subType = dub === "true" ? "dub" : "sub";
-    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.id}/${ep}/${subType}?autoPlay=true`;
+    src = `https://player.videasy.net/anime/${anime.id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   }
   frame.src = src;
 }
