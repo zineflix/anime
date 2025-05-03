@@ -64,20 +64,23 @@ if (!animeId) {
   const frame = document.getElementById('stream-frame');
 
   let src = "";
-  const subType = dub === "true" ? "dub" : "sub";
 
   if (provider === "vidsrc") {
+    const subType = dub === "true" ? "dub" : "sub";
     src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
   } else if (provider === "videasy") {
     src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   } else if (provider === "vidsrc-icu") {
-    // vidsrc.icu format: /anime/{id}/{episode}/{dub}/{skip}
-    // Assuming skip is always false for simplicity
-    src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${subType}/false`;
+    // Numeric format: /anime/{id}/{ep}/{dub as 0|1}/{skip as 0|1}
+    const dubFlag = dub === "true" ? "1" : "0";
+    const skipFlag = "1"; // You can make this dynamic too
+    src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/${skipFlag}`;
   }
 
+  console.log("Iframe source URL:", src); // Debug
   frame.src = src;
 }
+
 
 
       // Attach event listeners
