@@ -1,15 +1,9 @@
-* {
-    margin: 0;
-    padding: 2rem;
-    box-sizing: border-box;
-    font-family: "Helvetica Neue", Arial, sans-serif;
-}
-
 body {
-    background-color: #0d0d0d;
-    color: white;
-}
-
+      background: #0d0d0d;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
     .anime-detail {
       max-width: 900px;
       margin: auto;
@@ -81,7 +75,6 @@ body {
     h1, h2 {
       margin-bottom: 0.5rem;
     }
-
 
 /* Navigation Bar */
     nav {
