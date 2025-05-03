@@ -1,9 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #0d0d0d;
-  color: #fff;
-  margin: 0;
-  padding: 1rem;
+    background-color: #0d0d0d;
+    color: #fff;
 }
 
 header {
