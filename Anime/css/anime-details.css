@@ -75,3 +75,28 @@ body {
     h1, h2 {
       margin-bottom: 0.5rem;
     }
+
+/* MOBILE DISPLAY START */
+@media (max-width: 600px) {
+  .anime-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .anime-image,
+  .anime-info {
+    flex: none;
+    width: 100%;
+  }
+
+  .anime-title {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  iframe {
+    height: 300px;
+  }
+}
+/* MOBILE DISPLAY END */
