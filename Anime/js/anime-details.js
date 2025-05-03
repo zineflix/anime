@@ -79,7 +79,7 @@ const params = new URLSearchParams(window.location.search);
     src = `https://player.videasy.net/anime/${anime.id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   } else {
     const subType = dub === "true" ? "dub" : "sub";
-    src = `https://vidsrc.cc/v2/embed/anime/${anime.id}/${ep}/${subType}?autoPlay=true`;
+    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.id}/${ep}/${subType}?autoPlay=true`;
   }
   frame.src = src;
 }
