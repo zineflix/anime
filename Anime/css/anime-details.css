@@ -75,3 +75,50 @@ body {
     h1, h2 {
       margin-bottom: 0.5rem;
     }
+
+/* MOBILE RESPONSIVE START */
+@media (max-width: 768px) {
+  .anime-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .anime-image,
+  .anime-info {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .anime-title {
+    text-align: center;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  iframe {
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem;
+  }
+
+  .anime-detail {
+    padding: 1rem;
+  }
+
+  select,
+  button {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+  }
+/* MOBILE RESPONSIVE END */
+  iframe {
+    height: 250px;
+  }
+}
