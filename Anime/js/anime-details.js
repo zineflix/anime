@@ -64,7 +64,7 @@ const params = new URLSearchParams(window.location.search);
             </label>
           </div>
 
-          <iframe id="stream-frame" src="" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+          <iframe id="stream-frame" src="" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin"></iframe>
         `;
 
         // Initial stream
@@ -79,7 +79,7 @@ const params = new URLSearchParams(window.location.search);
     src = `https://player.videasy.net/anime/${anime.id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   } else {
     const subType = dub === "true" ? "dub" : "sub";
-    src = `https://vidsrc.cc/v2/embed/anime/${anime.id}/${ep}/${subType}`;
+    src = `https://vidsrc.cc/v2/embed/anime/${anime.id}/${ep}/${subType}?autoPlay=true`;
   }
   frame.src = src;
 }
