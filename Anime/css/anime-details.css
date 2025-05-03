@@ -10,23 +10,32 @@ body {
   background: #1a1a1a;
   padding: 1.5rem;
   border-radius: 10px;
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap; /* allows responsiveness on smaller screens */
 }
 
-.anime-detail img {
-  width: 25%; /* 1/4 of the container */
+.anime-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.anime-content {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap; /* enables responsiveness */
+}
+
+.anime-content img {
+  width: 25%;
   border-radius: 10px;
   object-fit: cover;
 }
 
 .anime-description {
-  flex: 1; /* takes up remaining space */
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 
     img {
       width: 100%;
