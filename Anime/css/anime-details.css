@@ -1,5 +1,6 @@
 * {
     margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -7,7 +8,7 @@ body {
       background: #0d0d0d;
       color: white;
       font-family: Arial, sans-serif;
-      padding: 2rem;
+
     }
     .anime-detail {
       max-width: 900px;
