@@ -85,7 +85,7 @@ const params = new URLSearchParams(window.location.search);
   const frame = document.getElementById('stream-frame');
 
   let src = "";
-  if (provider === "videasy") {  
+  if (provider === "vidsrc") {  // switched from videasy to vidsrc
     src = `https://player.videasy.net/anime/${anime.id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   } else {
     const subType = dub === "true" ? "dub" : "sub";
@@ -93,6 +93,7 @@ const params = new URLSearchParams(window.location.search);
   }
   frame.src = src;
 }
+
 
 
         // Attach change events
