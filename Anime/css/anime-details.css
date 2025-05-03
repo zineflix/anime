@@ -19,16 +19,17 @@ body {
 
 .anime-content {
   display: flex;
-  gap: 2rem;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .anime-image {
-  flex: 0 0 300px;
+  flex: 1 1 15%;
 }
 
 .anime-description {
-  flex: 1;
+  flex: 1 1 55%;
 }
 
 
