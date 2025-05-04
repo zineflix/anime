@@ -29,11 +29,12 @@ function fetchAnime() {
         const card = document.createElement('div');
         card.className = 'anime-card';
         card.innerHTML = `
-          <a href="anime-details.html?id=${anime.mal_id}">
-            <img src="${anime.images.jpg.image_url}" alt="${anime.title_english || anime.title}">
-            <h2>${anime.title_english || anime.title}</h2>
-          </a>
-        `;
+  <a href="anime-details.html?id=${anime.mal_id}">
+    <img src="${anime.images.jpg.image_url}" alt="${anime.title_english || anime.title}">
+    <h2>${anime.title_english || anime.title}</h2>
+  </a>
+`;
+
         list.appendChild(card);
       });
     })
