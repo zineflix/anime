@@ -12,14 +12,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script defer src="js/home.js"></script>    
 </head>
+  
 <body>
   <header>
     <h1>Explore Anime</h1>
+<!-- Search Start -->
     <input type="text" id="search-input" placeholder="Search anime..." />
 <button id="search-btn">Search</button>
-    <div class="filters">
+<!-- Search End -->
+
+<!-- Filter Start -->    
+<div class="filters">
       
-      <label>
+<label>
   Format:
   <select id="format-select">
     <option value="">All</option>
@@ -31,10 +36,7 @@
   </select>
 </label>
 
-  
-
-
-      <label>
+<label>
   Year:
   <select id="year-select">
     <option value="">All</option>
@@ -67,8 +69,7 @@
   </select>
 </label>
 
-
-      <label>
+<label>
   Genre:
   <select id="genre-select">
     <option value="">All</option>
@@ -94,14 +95,12 @@
   </select>
 </label>
 
-
-
       <button id="fetch-btn">Fetch Anime</button>
-    </div>
+</div>
   </header>
+<!-- Filter End -->
 
-  <main id="anime-list"></main>
+<main id="anime-list"></main>
 
-  <script src="anime.js"></script>
 </body>
 </html>
