@@ -98,3 +98,9 @@ if (!animeId) {
       container.innerHTML = `<p>Failed to load anime details. Please try again later.</p>`;
     });
 }
+
+// Menu Bar Start //
+document.getElementById('menu-toggle').addEventListener('click', () => {
+  document.getElementById('nav-links').classList.toggle('active');
+});
+// Menu Bar End //
