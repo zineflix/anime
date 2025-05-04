@@ -45,17 +45,35 @@ function fetchAnime() {
 // Optional: fetch default anime on first load
 fetchAnime();
 
-document.getElementById('search-btn').addEventListener('click', () => {
-  const searchTerm = document.getElementById('search-input').value.trim();
-  if (!searchTerm) return;
+let currentPage = 1;
+let currentSearchTerm = '';
 
-  const url = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(searchTerm)}&limit=20&order_by=popularity`;
+document.getElementById('search-btn').addEventListener('click', () => {
+  currentPage = 1;
+  currentSearchTerm = document.getElementById('search-input').value.trim();
+  if (!currentSearchTerm) return;
+  searchAnime(currentSearchTerm, currentPage, true);
+});
+
+document.getElementById('load-more-btn').addEventListener('click', () => {
+  currentPage++;
+  searchAnime(currentSearchTerm, currentPage, false);
+});
+
+function searchAnime(term, page, isNewSearch) {
+  const url = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(term)}&limit=20&page=${page}&order_by=popularity`;
 
   fetch(url)
     .then(res => res.json())
     .then(data => {
       const list = document.getElementById('anime-list');
-      list.innerHTML = '';
+      if (isNewSearch) list.innerHTML = '';
+
+      if (!data.data || data.data.length === 0) {
+        if (isNewSearch) list.innerHTML = '<p>No results found.</p>';
+        document.getElementById('load-more-btn').style.display = 'none';
+        return;
+      }
 
       data.data.forEach(anime => {
         const card = document.createElement('div');
@@ -64,13 +82,17 @@ document.getElementById('search-btn').addEventListener('click', () => {
           <a href="anime-details.html?id=${anime.mal_id}">
             <img src="${anime.images.jpg.image_url}" alt="${anime.title_english || anime.title}">
             <h2>${anime.title_english || anime.title}</h2>
+            <p>${anime.synopsis?.slice(0, 120) || 'No description'}...</p>
           </a>
         `;
         list.appendChild(card);
       });
+
+      // Show or hide the Load More button
+      document.getElementById('load-more-btn').style.display = data.pagination?.has_next_page ? 'inline-block' : 'none';
     })
     .catch(console.error);
-});
+}
 
 // Menu Bar Start //
 document.getElementById('menu-toggle').addEventListener('click', () => {
