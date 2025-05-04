@@ -171,3 +171,50 @@ main#anime-list {
   font-size: 14px;
 }
 /* Footer End */
+
+
+/* Anime card pop up Start */
+.anime-card {
+  position: relative;
+  overflow: visible;
+}
+
+.anime-popup {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center both vertically and horizontally */
+  background: rgba(17, 17, 17, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 12px;
+  border: 1px solid rgba(2, 163, 255, 0.4);
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(2, 163, 255, 0.6);
+  z-index: 100;
+  width: 280px;
+  font-size: 12px;
+  color: #f0f0f0;
+  text-align: left;
+  pointer-events: none;
+}
+
+/* Right-align popup if overflowing right */
+.anime-popup.right-align {
+  left: auto;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+/* Left-align popup if overflowing left */
+.anime-popup.left-align {
+  left: 0;
+  right: auto;
+  transform: translateY(-50%);
+}
+
+.anime-card:hover .anime-popup {
+  display: block;
+}
+/* Anime card pop up End */
