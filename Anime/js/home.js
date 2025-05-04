@@ -98,3 +98,29 @@ document.getElementById('menu-toggle').addEventListener('click', () => {
   document.getElementById('nav-links').classList.toggle('active');
 });
 // Menu Bar End //
+
+// Anime Card Popup Start //
+document.addEventListener("mouseover", function (e) {
+  const card = e.target.closest(".anime-card");
+  if (!card) return;
+
+  const popup = card.querySelector(".anime-popup");
+  if (!popup) return;
+
+  // Reset alignment
+  popup.classList.remove("left-align", "right-align");
+
+  // Temporarily show for measurement
+  popup.style.display = "block";
+  const popupRect = popup.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+
+  if (popupRect.right > viewportWidth) {
+    popup.classList.add("right-align");
+  } else if (popupRect.left < 0) {
+    popup.classList.add("left-align");
+  }
+
+  popup.style.display = ""; // Hide again until hover
+});
+// Anime Card Popup End //
