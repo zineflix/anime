@@ -11,7 +11,7 @@ body {
     padding: 100px;
 }
     .anime-detail {
-      max-width: 900px;
+      max-width: 1200px;
       margin: auto;
       background: #1a1a1a;
       padding: 1.5rem;
@@ -26,7 +26,7 @@ body {
 .anime-content {
   display: flex;
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   align-items: flex-start;
 }
 
@@ -340,7 +340,7 @@ body {
 
 @media (max-width: 600px) {
   .site-footer {
-    margin-bottom: 54px;
+    margin-bottom: 0px;
     padding: 10px;
   }
   
