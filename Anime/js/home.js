@@ -32,8 +32,18 @@ function fetchAnime() {
   <a href="anime-details.html?id=${anime.mal_id}">
     <img src="${anime.images.jpg.image_url}" alt="${anime.title_english || anime.title}">
     <h2>${anime.title_english || anime.title}</h2>
+    <div class="anime-popup">
+      <h3>${anime.title_english || anime.title}</h3>
+      <p><strong>Description:</strong> ${anime.synopsis ? anime.synopsis.substring(0, 200) + "..." : 'No description available.'}</p>
+      <p><strong>Rating:</strong> ${anime.rating || 'N/A'}</p>
+      <p><strong>Status:</strong> ${anime.status || 'Unknown'}</p>
+      <p><strong>Genre:</strong> ${anime.genres ? anime.genres.map(g => g.name).join(', ') : 'Unknown'}</p>
+      <p><strong>Aired:</strong> ${anime.aired && anime.aired.string ? anime.aired.string : 'Unknown'}</p>
+    </div>
   </a>
 `;
+
+
 
         list.appendChild(card);
       });
@@ -79,11 +89,21 @@ function searchAnime(term, page, isNewSearch) {
         const card = document.createElement('div');
         card.className = 'anime-card';
         card.innerHTML = `
-          <a href="anime-details.html?id=${anime.mal_id}">
-            <img src="${anime.images.jpg.image_url}" alt="${anime.title_english || anime.title}">
-            <h2>${anime.title_english || anime.title}</h2>
-          </a>
-        `;
+  <a href="anime-details.html?id=${anime.mal_id}">
+    <img src="${anime.images.jpg.image_url}" alt="${anime.title_english || anime.title}">
+    <h2>${anime.title_english || anime.title}</h2>
+    <div class="anime-popup">
+      <h3>${anime.title_english || anime.title}</h3>
+      <p><strong>Description:</strong> ${anime.synopsis ? anime.synopsis.substring(0, 200) + "..." : 'No description available.'}</p>
+      <p><strong>Rating:</strong> ${anime.rating || 'N/A'}</p>
+      <p><strong>Status:</strong> ${anime.status || 'Unknown'}</p>
+      <p><strong>Genre:</strong> ${anime.genres ? anime.genres.map(g => g.name).join(', ') : 'Unknown'}</p>
+      <p><strong>Aired:</strong> ${anime.aired && anime.aired.string ? anime.aired.string : 'Unknown'}</p>
+    </div>
+  </a>
+`;
+
+
         list.appendChild(card);
       });
 
@@ -92,6 +112,7 @@ function searchAnime(term, page, isNewSearch) {
     })
     .catch(console.error);
 }
+
 
 // Menu Bar Start //
 document.getElementById('menu-toggle').addEventListener('click', () => {
