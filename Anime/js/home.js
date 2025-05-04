@@ -64,7 +64,6 @@ document.getElementById('search-btn').addEventListener('click', () => {
           <a href="anime-details.html?id=${anime.mal_id}">
             <img src="${anime.images.jpg.image_url}" alt="${anime.title_english || anime.title}">
             <h2>${anime.title_english || anime.title}</h2>
-            <p>${anime.synopsis?.slice(0, 120) || 'No description'}...</p>
           </a>
         `;
         list.appendChild(card);
