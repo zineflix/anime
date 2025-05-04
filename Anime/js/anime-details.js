@@ -16,7 +16,7 @@ if (!animeId) {
       container.innerHTML = `
         <div class="anime-content">
           <div class="anime-image">
-            <img src="${anime.images.jpg.large_image_url}" alt="${displayTitle}">
+            <image src="${anime.images.jpg.large_image_url}" alt="${displayTitle}">
           </div>
           <div class="anime-info">
             <h1 class="anime-title">${displayTitle}</h1>
