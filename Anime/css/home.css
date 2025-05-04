@@ -52,6 +52,14 @@ main#anime-list {
   line-height: 1.2;
 }
 
+.anime-card a {
+  text-decoration: none;
+}
+
+.anime-card h2 {
+  color: #0296cc;
+}
+
 .anime-card img {
   width: 100%;
   border-radius: 10px;
@@ -138,7 +146,7 @@ main#anime-list {
 }
 
 .site-footer .footer-links a {
-  color: #1e90ff;
+  color: #0296cc;
   text-decoration: none;
   margin: 0 10px;
   font-weight: bold;
