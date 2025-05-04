@@ -75,7 +75,7 @@ if (!animeId) {
     const skipFlag = "1"; // You can make this dynamic too
     src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/${skipFlag}`;
   } else if (provider === "vidsrc-co") {
-    src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}`;
+    src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins`;
   } else if (provider === "videasy") {
     src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   } 
