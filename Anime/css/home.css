@@ -35,6 +35,7 @@ button {
   cursor: pointer;
 }
 
+
 main#anime-list {
   display: grid;
   gap: 16px;
@@ -47,10 +48,18 @@ main#anime-list {
   border-radius: 10px;
   padding: 16px;
   text-align: center;
-  font-size: 9.6px; /* 0.6rem */
+  font-size: 9.6px;
   margin: 8px 0;
   line-height: 1.2;
+  box-shadow: 0 0 5px #0296cc;
+  transition: box-shadow 0.3s ease;
 }
+
+.anime-card:hover {
+  box-shadow: 0 0 25px #02b5ff;
+}
+
+
 
 .anime-card a {
   text-decoration: none;
