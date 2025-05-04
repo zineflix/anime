@@ -79,7 +79,7 @@ main#anime-list {
 .logo {
   font-size: 25px; /* 1.2rem */
   font-weight: bold;
-  color: #00fff7;
+  color: #0296cc;
   padding: 10px;
   margin-left: 5px;
 }
@@ -91,7 +91,7 @@ main#anime-list {
 }
 
 .nav-links li a {
-  color: #00fff7;
+  color: #0296cc;
   text-decoration: none;
   font-weight: bold;
   padding: 15px;
