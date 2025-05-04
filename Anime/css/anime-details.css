@@ -75,3 +75,92 @@ body {
     h1, h2 {
       margin-bottom: 0.5rem;
     }
+
+/* Navigation Start */
+.navbar {
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: space-between;
+  align-ites: center;
+  padding: 0px;
+  position: relative;
+}
+
+.logo {
+  font-size: 25px; /* 1.2rem */
+  font-weight: bold;
+  color: #0296cc;
+  padding: 10px;
+  margin-left: 5px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+}
+
+.nav-links li a {
+  color: #0296cc;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 15px;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px; /* 1.5rem */
+  color: white;
+}
+
+/* Mobile menu */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    background-color: #1a1a1a;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    padding: 15px;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+}
+/* Navigation End */
+
+/* Footer Start */
+.site-footer {
+  background-color: #1a1a1a;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  border-top: 1px solid #333;
+}
+
+.site-footer .footer-links a {
+  color: #0296cc;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.site-footer .footer-links a:hover {
+  text-decoration: underline;
+}
+
+.site-footer p {
+  color: #aaa;
+  margin-top: 10px;
+  font-size: 14px;
+}
+/* Footer End */
