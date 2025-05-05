@@ -142,6 +142,11 @@ h2 {
   .nav-links.active {
     display: flex;
   }
+  .nav-links li a {
+    border: 1px solid #0296cc;
+    border-radius: 5px;
+    display: block;
+  }
 }
 /* Navigation End */
 
