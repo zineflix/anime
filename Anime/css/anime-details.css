@@ -289,3 +289,31 @@ h2 {
 }
 
 /* Ad Container End */
+
+
+.floating-ad {
+  position: fixed;
+  top: 150px; /* Adjust vertical position */
+  width: 160px;
+  height: 600px;
+  background-color: #2a2a2a;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  z-index: 999;
+  border-radius: 10px;
+}
+
+.left-ad {
+  left: 10px;
+}
+
+.right-ad {
+  right: 10px;
+}
+
+@media (max-width: 1200px) {
+  .floating-ad {
+    display: none;
+  }
+}
