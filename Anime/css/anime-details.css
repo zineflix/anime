@@ -206,15 +206,6 @@ h2 {
     flex-direction: column;
   }
 
-  .nav-links {
-    gap: 0;
-  }
-
-  .nav-links li a {
-    padding: 10px;
-    display: block;
-  }
-
   .logo {
     font-size: 20px;
   }
