@@ -88,13 +88,13 @@ main#anime-list {
   background-color: #1a1a1a;
   display: flex;
   justify-content: space-between;
-  align-ites: center;
-  padding: 0px;
+  align-items: center; /* Fixes vertical alignment */
+  padding: 0 16px; /* Adds horizontal padding */
   position: relative;
 }
 
 .logo {
-  font-size: 25px; /* 1.2rem */
+  font-size: 25px;
   font-weight: bold;
   color: #0296cc;
   padding: 10px;
@@ -104,22 +104,25 @@ main#anime-list {
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 10px;
+  
 }
 
 .nav-links li a {
   color: white;
   text-decoration: none;
   font-weight: bold;
-  padding: 15px;
+  padding: 10px;
+  background: #0296cc;
 }
 
 .menu-toggle {
   display: none;
   background: none;
   border: none;
-  font-size: 24px; /* 1.5rem */
+  font-size: 24px;
   color: white;
+  margin-left: auto; /* Pushes it to the right when in flex */
 }
 
 /* Mobile menu */
@@ -141,6 +144,12 @@ main#anime-list {
 
   .nav-links.active {
     display: flex;
+    border: 1px solid #0296cc;
+    border-radius: 5px;
+  }
+  .nav-links li a {
+    border-radius: 5px;
+    display: block;
   }
 }
 /* Navigation End */
