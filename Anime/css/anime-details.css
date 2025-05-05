@@ -114,6 +114,7 @@ h2 {
   font-weight: bold;
   padding: 10px;
   background: #0296cc;
+  border-radius: 5px;
 }
 
 .menu-toggle {
