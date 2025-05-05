@@ -165,3 +165,63 @@ body {
   font-size: 14px;
 }
 /* Footer End */
+
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem;
+  }
+
+  .anime-detail {
+    padding: 1rem;
+    margin-top: 30px;
+  }
+
+  .anime-title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .anime-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .anime-image,
+  .anime-info {
+    flex: 1 1 100%;
+  }
+
+  iframe {
+    height: 300px;
+  }
+
+  select,
+  button {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+    width: 100%;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .nav-links li a {
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .site-footer {
+    padding: 15px;
+  }
+
+  .site-footer p {
+    font-size: 12px;
+  }
+}
