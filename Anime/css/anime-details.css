@@ -126,7 +126,6 @@ h2 {
 @media (max-width: 768px) {
   .menu-toggle {
     display: block;
-    margin-right: -200px;
   }
 
   .nav-links {
