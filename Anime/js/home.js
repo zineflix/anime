@@ -2,16 +2,46 @@ document.getElementById('fetch-btn').addEventListener('click', fetchAnime);
 
 function fetchAnime() {
   const year = document.getElementById('year-select').value;
-  const genre = document.getElementById('genre-select').value;
+  const genreName = document.getElementById('genre-select').value;
+  const format = document.getElementById('format-select').value;
 
-  let url = `https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=20`;
+  // Genre mapping from name to Jikan ID
+  const genreMap = {
+    "Action": 1,
+    "Adventure": 2,
+    "Comedy": 4,
+    "Drama": 8,
+    "Ecchi": 9,
+    "Fantasy": 10,
+    "Hentai": 12,
+    "Horror": 14,
+    "Mahou Shoujo": 16,
+    "Mecha": 18,
+    "Music": 19,
+    "Mystery": 7,
+    "Psychological": 40,
+    "Romance": 22,
+    "Sci-Fi": 24,
+    "Slice of Life": 36,
+    "Sports": 30,
+    "Supernatural": 37,
+    "Thriller": 41
+  };
+
+  const genreId = genreMap[genreName];
+  let url = `https://api.jikan.moe/v4/anime?limit=20&order_by=popularity&start_date=2024-01-01&end_date=2024-12-31`;
+
 
   if (year) {
     url += `&start_date=${year}-01-01&end_date=${year}-12-31`;
   }
 
-  if (genre) {
-    url += `&genres=${genre}`;
+  if (format) {
+    url += `&type=${format.toLowerCase()}`;
+  }
+
+  if (genreId) {
+    url += `&genres=${genreId}`;
   }
 
   fetch(url)
