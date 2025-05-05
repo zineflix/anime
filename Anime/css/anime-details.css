@@ -88,7 +88,7 @@ h2 {
   background-color: #1a1a1a;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-ites: center;
   padding: 0px;
   position: relative;
 }
@@ -126,7 +126,6 @@ h2 {
 @media (max-width: 768px) {
   .menu-toggle {
     display: block;
-    margin-right: 10px;
   }
 
   .nav-links {
