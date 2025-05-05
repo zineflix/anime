@@ -100,7 +100,12 @@ if (!animeId) {
 }
 
 // Menu Bar Start //
-document.getElementById('menu-toggle').addEventListener('click', () => {
-  document.getElementById('nav-links').classList.toggle('active');
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById('menu-toggle');
+  const navLinks = document.getElementById('nav-links');
+
+  toggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+  });
 });
 // Menu Bar End //
