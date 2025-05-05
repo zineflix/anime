@@ -21,7 +21,8 @@ if (!animeId) {
           <div class="anime-info">
             <h1 class="anime-title">${displayTitle}</h1>
             <div class="anime-description">
-              <p>${anime.synopsis || "No description available."}</p>
+              <p id="description" class="collapsed">${anime.synopsis || "No description available."}</p>
+              <button id="read-more">Read More</button>
             </div>
           </div>
         </div>
@@ -83,6 +84,14 @@ if (!animeId) {
   console.log("Iframe source URL:", src); // Debug
   frame.src = src;
 }
+
+      const readMoreBtn = document.getElementById('read-more');
+      const description = document.getElementById('description');
+
+      readMoreBtn.addEventListener('click', () => {
+        description.classList.toggle('collapsed');
+        readMoreBtn.textContent = description.classList.contains('collapsed') ? 'Read More' : 'Show Less';
+      });
 
 
 
