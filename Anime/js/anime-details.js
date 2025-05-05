@@ -113,3 +113,9 @@ document.getElementById('menu-toggle').addEventListener('click', () => {
   document.getElementById('nav-links').classList.toggle('active');
 });
 // Menu Bar End //
+
+
+container.innerHTML = `
+  ...
+  <iframe id="stream-frame" src="www.example.com" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin"></iframe>
+`;
