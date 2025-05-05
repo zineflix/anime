@@ -59,6 +59,7 @@ iframe {
   margin-top: 16px;
   border: none;
   border-radius: 10px;
+  border: 1px solid #0296cc;
 }
 
 .controls {
