@@ -236,3 +236,19 @@ h2 {
   height: 40px;
   background: linear-gradient(to bottom, transparent, #1a1a1a);
 }
+
+#read-more {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #0296cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+#read-more:hover {
+  background-color: #0277a3;
+}
