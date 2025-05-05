@@ -219,3 +219,20 @@ h2 {
     font-size: 20px;
   }
 }
+
+
+.anime-description p.collapsed {
+  max-height: 100px;
+  overflow: hidden;
+  position: relative;
+}
+
+.anime-description p.collapsed::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, #1a1a1a);
+}
