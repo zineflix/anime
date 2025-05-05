@@ -265,7 +265,14 @@ h2 {
   margin-top: 16px;
 }
 
-iframe#stream-frame {
+.iframe-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+#iframe-wrapper iframe,
+#stream-frame {
   width: 800px;
   height: 500px;
   border-radius: 12px;
@@ -295,7 +302,7 @@ iframe#stream-frame {
     margin: 10px 0;
   }
 
-  iframe#stream-frame {
+  #stream-frame {
     width: 100%;
     height: 300px;
   }
