@@ -257,41 +257,31 @@ h2 {
 
 
 /* Ad Container Start */
-.video-ad-container {
+.video-layout {
   display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 20px;
+  gap: 24px;
+  margin-top: 24px;
 }
 
-iframe#stream-frame {
-  flex: 0 1 70%;
-  height: 500px;
-  border: none;
-  border-radius: 10px;
+.ad-container {
+  flex: 1 1 25%;
 }
 
-.side-ad {
-  flex: 0 1 15%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.video-player {
+  flex: 1 1 75%;
 }
 
-.side-ad img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-/* Hide ads on small screens */
 @media (max-width: 768px) {
-  .side-ad {
-    display: none;
+  .video-layout {
+    flex-direction: column;
   }
 
-  iframe#stream-frame {
-    flex: 1 1 100%;
+  .ad-container {
+    display: none; /* Hide ads on mobile */
+  }
+
+  .video-player {
+    width: 100%;
   }
 }
 
