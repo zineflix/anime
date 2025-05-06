@@ -13,6 +13,33 @@ if (!animeId) {
       const anime = data.data;
       const displayTitle = anime.title_english || anime.title;
 
+// Fetch TMDB data using title
+fetch(`https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(displayTitle)}&api_key=YOUR_TMDB_API_KEY`)
+  .then(res => res.json())
+  .then(tmdbData => {
+    if (tmdbData.results && tmdbData.results.length > 0) {
+      const tmdbAnime = tmdbData.results[0];
+
+      // Optional: You could choose the most accurate match using more filters
+
+      // Append TMDB info
+      const tmdbRating = tmdbAnime.vote_average;
+      const tmdbPoster = tmdbAnime.poster_path
+        ? `https://image.tmdb.org/t/p/w500${tmdbAnime.poster_path}`
+        : null;
+
+      const infoBox = document.querySelector(".anime-info");
+      if (tmdbPoster) {
+        infoBox.innerHTML += `<img src="${tmdbPoster}" alt="TMDB Poster" style="width:100px;border-radius:10px;">`;
+      }
+      infoBox.innerHTML += `<p><strong>TMDB Rating:</strong> ${tmdbRating}</p>`;
+    }
+  })
+  .catch(err => {
+    console.error("TMDB fetch error:", err);
+  });
+      
+
       container.innerHTML = `
         <div class="anime-content">
           <div class="anime-image">
