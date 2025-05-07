@@ -152,54 +152,63 @@ window.tmdbId = tmdbId;
 
       
       // Streaming setup
-      function updateStream() {
+      async function updateStream() {
   const ep = document.getElementById('episode-select').value;
   const dub = document.getElementById('dub-select').value;
-  const provider = document.getElementById('provider-select').value;
+  const providers = ["vidsrc", "tmdb", "videasy-v1", "vidsrc-icu", "vidsrc-co", "videasy-v2"];
   const frame = document.getElementById('stream-frame');
 
-  let src = "";
+  const tryProvider = async (provider) => {
+    let src = "";
+    if (provider === "vidsrc") {
+      const subType = dub === "true" ? "dub" : "sub";
+      src = `https://vidsrc.cc/v2/embed/anime/ani${animeId}/${ep}/${subType}?autoPlay=true`;
+    } else if (provider === "tmdb") {
+      if (!window.tmdbId) return null;
+      src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/1/${ep}?autoPlay=true`;
+    } else if (provider === "videasy-v1") {
+      if (!window.tmdbId) return null;
+      src = `https://player.videasy.net/tv/${window.tmdbId}/1/${ep}${dub === "true" ? "?dub=true" : ""}`;
+    } else if (provider === "vidsrc-icu") {
+      const dubFlag = dub === "true" ? "1" : "0";
+      const skipFlag = "1";
+      src = `https://vidsrc.icu/embed/anime/${animeId}/${ep}/${dubFlag}/${skipFlag}`;
+    } else if (provider === "vidsrc-co") {
+      src = `https://player.vidsrc.co/embed/anime/${animeId}/${ep}?dub=${dub}&autoplay=true`;
+    } else if (provider === "videasy-v2") {
+      src = `https://player.videasy.net/anime/${animeId}/${ep}${dub === "true" ? "?dub=true" : ""}`;
+    }
 
-  if (provider === "vidsrc") {
-    const subType = dub === "true" ? "dub" : "sub";
-    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
-  } else if (provider === "tmdb") {
-  if (!window.tmdbId) {
-    frame.src = "";
-    console.warn("TMDB ID not loaded yet.");
-    return;
+    return new Promise(resolve => {
+      const testFrame = document.createElement('iframe');
+      testFrame.style.display = 'none';
+      testFrame.src = src;
+      document.body.appendChild(testFrame);
+      testFrame.onload = () => {
+        document.body.removeChild(testFrame);
+        resolve(src); // Considered loaded successfully
+      };
+      testFrame.onerror = () => {
+        document.body.removeChild(testFrame);
+        resolve(null);
+      };
+      setTimeout(() => {
+        document.body.removeChild(testFrame);
+        resolve(null); // Timeout fallback
+      }, 5000);
+    });
+  };
+
+  for (const provider of providers) {
+    const src = await tryProvider(provider);
+    if (src) {
+      frame.src = src;
+      console.log("Using provider:", provider);
+      break;
+    }
   }
-
-  const season = 1; // Set dynamically if needed
-const episode = ep; // Use selected episode
-src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
-
-  } else if (provider === "videasy-v1") {
-  if (!window.tmdbId) {
-    frame.src = "";
-    console.warn("TMDB ID not loaded yet for Videasy.");
-    return;
-  }
-
-  const season = 1; // You can make this dynamic if needed
-  const episode = ep;
-  src = `https://player.videasy.net/tv/${window.tmdbId}/${season}/${episode}${dub === "true" ? "?dub=true" : ""}`;
 }
- else if (provider === "vidsrc-icu") {
-    // Numeric format: /anime/{id}/{ep}/{dub as 0|1}/{skip as 0|1}
-    const dubFlag = dub === "true" ? "1" : "0";
-    const skipFlag = "1"; // You can make this dynamic too
-    src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/${skipFlag}`;
-  } else if (provider === "vidsrc-co") {
-    src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins`;
-  } else if (provider === "videasy-v2") {
-    src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
-  } 
 
-
-  console.log("Iframe source URL:", src); // Debug
-  frame.src = src;
-}
 
       const readMoreBtn = document.getElementById('read-more');
       const description = document.getElementById('description');
