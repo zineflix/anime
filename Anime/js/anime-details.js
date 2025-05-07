@@ -57,6 +57,32 @@ window.tmdbId = tmdbId;
       
 
       container.innerHTML = `
+
+fetch(`https://api.jikan.moe/v4/anime/${anime.mal_id}/relations`)
+  .then(res => res.json())
+  .then(relationData => {
+    const seasons = [anime]; // Include current anime as first season
+    relationData.data.forEach(rel => {
+      if (rel.relation.toLowerCase().includes("sequel") || rel.relation.toLowerCase().includes("prequel")) {
+        rel.entry.forEach(entry => seasons.push(entry));
+      }
+    });
+
+    const seasonSelect = document.getElementById("season-select");
+    seasons.forEach((s, index) => {
+      const option = document.createElement("option");
+      option.value = s.mal_id;
+      option.textContent = s.title;
+      seasonSelect.appendChild(option);
+    });
+
+    seasonSelect.addEventListener("change", () => {
+      const selectedId = seasonSelect.value;
+      window.location.search = `?id=${selectedId}`;
+    });
+  });
+
+      
         <div class="anime-content">
           <div class="anime-image">
             <image src="${anime.images.jpg.large_image_url}" alt="${displayTitle}">
@@ -161,29 +187,7 @@ window.tmdbId = tmdbId;
       document.getElementById('provider-select').addEventListener('change', updateStream);
 
       updateStream(); // Initial call
-      fetch(`https://api.jikan.moe/v4/anime/${anime.mal_id}/relations`)
-  .then(res => res.json())
-  .then(relationData => {
-    const seasons = [anime]; // Include current anime as first season
-    relationData.data.forEach(rel => {
-      if (rel.relation.toLowerCase().includes("sequel") || rel.relation.toLowerCase().includes("prequel")) {
-        rel.entry.forEach(entry => seasons.push(entry));
-      }
-    });
-
-    const seasonSelect = document.getElementById("season-select");
-    seasons.forEach((s, index) => {
-      const option = document.createElement("option");
-      option.value = s.mal_id;
-      option.textContent = s.title;
-      seasonSelect.appendChild(option);
-    });
-
-    seasonSelect.addEventListener("change", () => {
-      const selectedId = seasonSelect.value;
-      window.location.search = `?id=${selectedId}`;
-    });
-  });
+      
     })
     .catch(err => {
       console.error("Anime fetch error:", err);
