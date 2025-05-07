@@ -174,7 +174,7 @@ window.tmdbId = tmdbId;
 const episode = ep; // Use selected episode
 src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
 
-  } } else if (provider === "videasy") {
+  } else if (provider === "videasy-v1") {
   if (!window.tmdbId) {
     frame.src = "";
     console.warn("TMDB ID not loaded yet for Videasy.");
