@@ -161,20 +161,7 @@ window.tmdbId = tmdbId;
       document.getElementById('provider-select').addEventListener('change', updateStream);
 
       updateStream(); // Initial call
-    })
-    .catch(err => {
-      console.error("Anime fetch error:", err);
-      container.innerHTML = `<p>Failed to load anime details. Please try again later.</p>`;
-    });
-}
-
-// Menu Bar Start //
-document.getElementById('menu-toggle').addEventListener('click', () => {
-  document.getElementById('nav-links').classList.toggle('active');
-});
-// Menu Bar End //
-
-fetch(`https://api.jikan.moe/v4/anime/${anime.mal_id}/relations`)
+      fetch(`https://api.jikan.moe/v4/anime/${anime.mal_id}/relations`)
   .then(res => res.json())
   .then(relationData => {
     const seasons = [anime]; // Include current anime as first season
@@ -197,3 +184,17 @@ fetch(`https://api.jikan.moe/v4/anime/${anime.mal_id}/relations`)
       window.location.search = `?id=${selectedId}`;
     });
   });
+    })
+    .catch(err => {
+      console.error("Anime fetch error:", err);
+      container.innerHTML = `<p>Failed to load anime details. Please try again later.</p>`;
+    });
+}
+
+// Menu Bar Start //
+document.getElementById('menu-toggle').addEventListener('click', () => {
+  document.getElementById('nav-links').classList.toggle('active');
+});
+// Menu Bar End //
+
+
