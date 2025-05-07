@@ -139,9 +139,10 @@ window.tmdbId = tmdbId;
             <select id="provider-select">
               <option value="vidsrc" selected>VidSrc</option>
               <option value="tmdb">TMDB (via Vidsrc)</option>
+              <option value="videasy-v1">Videasy v1</option>
               <option value="vidsrc-icu">VidSrc ICU</option>
               <option value="vidsrc-co">VidSrc CO</option>
-              <option value="videasy">Videasy</option>
+              <option value="videasy-v2">Videasy v2</option>
             </select>
           </label>
         </div>
@@ -173,6 +174,10 @@ window.tmdbId = tmdbId;
 const episode = ep; // Use selected episode
 src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
 
+  } else if (provider === "videasy-v1") {
+    // Videasy Version 2
+    const subType = dub === "true" ? "2" : "1"; // 2 for dub, 1 for sub
+    src = `https://player.videasy.net/v2/tv/${anime.mal_id}/${ep}/${subType}`;
   } else if (provider === "vidsrc-icu") {
     // Numeric format: /anime/{id}/{ep}/{dub as 0|1}/{skip as 0|1}
     const dubFlag = dub === "true" ? "1" : "0";
@@ -180,7 +185,7 @@ src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoP
     src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/${skipFlag}`;
   } else if (provider === "vidsrc-co") {
     src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins`;
-  } else if (provider === "videasy") {
+  } else if (provider === "videasy-v2") {
     src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   } 
 
