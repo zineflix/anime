@@ -11,19 +11,35 @@ if (!animeId) {
     .then(res => res.json())
     .then(data => {
       const anime = data.data;
-      if (!anime.episodes || anime.status === "Currently Airing") {
-  maxEpisodes = 9999; // or some higher guess value
-} else {
-  maxEpisodes = anime.episodes;
-}
-      const episodeSelect = document.createElement('select');
-      episodeSelect.id = "episode-select";
-      for (let i = 1; i <= maxEpisodes; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = `Episode ${i}`;
-        episodeSelect.appendChild(option);
-      }
+      // Fetch aired episodes
+fetch(`https://api.jikan.moe/v4/anime/${animeId}/episodes?page=1&limit=100`)
+  .then(res => res.json())
+  .then(episodeData => {
+    const episodes = episodeData.data; // only aired episodes
+    maxEpisodes = episodes.length;
+
+    const episodeSelect = document.createElement('select');
+    episodeSelect.id = "episode-select";
+
+    episodes.forEach(ep => {
+      const option = document.createElement('option');
+      option.value = ep.mal_id;
+      option.textContent = `Episode ${ep.mal_id}`;
+      episodeSelect.appendChild(option);
+    });
+
+    // Add the select to your controls
+    document.querySelector('.controls').appendChild(episodeSelect);
+
+    // Attach event listener
+    episodeSelect.addEventListener('change', updateStream);
+
+    updateStream(); // Initial call
+  })
+  .catch(err => {
+    console.error("Failed to fetch episodes:", err);
+  });
+
 
       const displayTitle = anime.title_english || anime.title;
 
@@ -121,9 +137,7 @@ window.tmdbId = tmdbId;
         <div class="controls">
           <label>
             Episode:
-            <select id="episode-select">
-              ${Array.from({length: maxEpisodes}, (_, i) => `<option value="${i+1}">Episode ${i+1}</option>`).join('')}
-            </select>
+            
           </label>
 
           <label>
