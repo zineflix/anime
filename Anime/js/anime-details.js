@@ -12,7 +12,7 @@ if (!animeId) {
     .then(data => {
       const anime = data.data;
       if (!anime.episodes || anime.status === "Currently Airing") {
-  maxEpisodes = 1000; // or some higher guess value
+  maxEpisodes = 9999; // or some higher guess value
 } else {
   maxEpisodes = anime.episodes;
 }
