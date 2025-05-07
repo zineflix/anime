@@ -88,8 +88,8 @@ if (!animeId) {
 
             const infoBox = document.querySelector(".anime-info");
             if (tmdbPoster) {
-              infoBox.innerHTML += `<img src="${tmdbPoster}" alt="TMDB Poster" style="width:100px;border-radius:10px;">`;
-            }
+  infoBox.innerHTML += `<img src="${tmdbPoster}" alt="TMDB Poster" style="width:100px;border-radius:10px;">`;
+}
             infoBox.innerHTML += `<p><strong>TMDB Rating:</strong> ${tmdbRating}</p>`;
           }
         })
