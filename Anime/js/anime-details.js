@@ -175,9 +175,9 @@ const episode = ep; // Use selected episode
 src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
 
   } else if (provider === "videasy-v1") {
-    // Videasy Version 2
-    const subType = dub === "true" ? "2" : "1"; // 2 for dub, 1 for sub
-    src = `https://player.videasy.net/v2/tv/${anime.mal_id}/${ep}/${subType}`;
+    // Use the Videasy format: https://player.videasy.net/tv/{anime_id}/{season}/{episode}
+    const season = 1; // Adjust this to use the correct season
+    src = `https://player.videasy.net/tv/${anime.mal_id}/${season}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   } else if (provider === "vidsrc-icu") {
     // Numeric format: /anime/{id}/{ep}/{dub as 0|1}/{skip as 0|1}
     const dubFlag = dub === "true" ? "1" : "0";
