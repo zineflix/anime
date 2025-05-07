@@ -31,8 +31,6 @@ if (!animeId) {
     maxEpisodes = 1;
   });
 
-      const displayTitle = anime.title_english || anime.title;
-
 // Fetch similar anime titles from Jikan to find other seasons
 fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(displayTitle)}&limit=20`)
   .then(res => res.json())
