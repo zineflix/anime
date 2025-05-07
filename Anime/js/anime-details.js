@@ -103,7 +103,10 @@ if (!animeId) {
           <div class="anime-info">
             <h1 class="anime-title">${displayTitle}</h1>
             <div class="anime-description">
-              <p id="description" class="collapsed">${anime.synopsis || "No description available."}</p>
+              <div id="description" class="collapsed">
+  <p>${anime.synopsis || "No description available."}</p>
+</div>
+
               <button id="read-more">Read More</button>
             </div>
           </div>
