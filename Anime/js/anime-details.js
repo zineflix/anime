@@ -71,6 +71,12 @@ window.tmdbId = tmdbId;
         </div>
 
         <h2>Watch Anime</h2>
+        
+        <label>
+         Season:
+         <select id="season-select"></select>
+        </label>
+        
         <div class="controls">
           <label>
             Episode:
@@ -168,3 +174,26 @@ document.getElementById('menu-toggle').addEventListener('click', () => {
 });
 // Menu Bar End //
 
+fetch(`https://api.jikan.moe/v4/anime/${anime.mal_id}/relations`)
+  .then(res => res.json())
+  .then(relationData => {
+    const seasons = [anime]; // Include current anime as first season
+    relationData.data.forEach(rel => {
+      if (rel.relation.toLowerCase().includes("sequel") || rel.relation.toLowerCase().includes("prequel")) {
+        rel.entry.forEach(entry => seasons.push(entry));
+      }
+    });
+
+    const seasonSelect = document.getElementById("season-select");
+    seasons.forEach((s, index) => {
+      const option = document.createElement("option");
+      option.value = s.mal_id;
+      option.textContent = s.title;
+      seasonSelect.appendChild(option);
+    });
+
+    seasonSelect.addEventListener("change", () => {
+      const selectedId = seasonSelect.value;
+      window.location.search = `?id=${selectedId}`;
+    });
+  });
