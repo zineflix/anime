@@ -101,7 +101,6 @@ window.tmdbId = tmdbId;
               <option value="vidsrc-icu">VidSrc ICU</option>
               <option value="vidsrc-co">VidSrc CO</option>
               <option value="videasy">Videasy</option>
-              <option value="tmdb">TMDB (via Vidsrc)</option>
             </select>
           </label>
         </div>
