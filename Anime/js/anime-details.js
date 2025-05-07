@@ -174,11 +174,18 @@ window.tmdbId = tmdbId;
 const episode = ep; // Use selected episode
 src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
 
-  } else if (provider === "videasy-v1") {
-    // Use the Videasy format: https://player.videasy.net/tv/{anime_id}/{season}/{episode}
-    const season = 1; // Adjust this to use the correct season
-    src = `https://player.videasy.net/tv/${anime.mal_id}/${season}/${ep}${dub === "true" ? "?dub=true" : ""}`;
-  } else if (provider === "vidsrc-icu") {
+  } } else if (provider === "videasy") {
+  if (!window.tmdbId) {
+    frame.src = "";
+    console.warn("TMDB ID not loaded yet for Videasy.");
+    return;
+  }
+
+  const season = 1; // You can make this dynamic if needed
+  const episode = ep;
+  src = `https://player.videasy.net/tv/${window.tmdbId}/${season}/${episode}${dub === "true" ? "?dub=true" : ""}`;
+}
+ else if (provider === "vidsrc-icu") {
     // Numeric format: /anime/{id}/{ep}/{dub as 0|1}/{skip as 0|1}
     const dubFlag = dub === "true" ? "1" : "0";
     const skipFlag = "1"; // You can make this dynamic too
