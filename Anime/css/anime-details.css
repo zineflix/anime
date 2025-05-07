@@ -256,7 +256,12 @@ h2 {
 }
 
 
-/* Ad Container Start */
-
-/* Ad Container End */
+/* Select Start */
+#episode-select,
+#dub-select,
+#provider-select,
+#season-select {
+  border: 2px solid #0296cc;
+}
+/* Select End */
 
