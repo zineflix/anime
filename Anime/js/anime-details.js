@@ -128,7 +128,10 @@ window.tmdbId = tmdbId;
     return;
   }
 
-  src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}?autoPlay=true`;
+  const season = 1; // Set dynamically if needed
+const episode = ep; // Use selected episode
+src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
+
   } else if (provider === "vidsrc-icu") {
     // Numeric format: /anime/{id}/{ep}/{dub as 0|1}/{skip as 0|1}
     const dubFlag = dub === "true" ? "1" : "0";
