@@ -81,6 +81,7 @@ window.tmdbId = tmdbId;
             Provider:
             <select id="provider-select">
               <option value="vidsrc" selected>VidSrc</option>
+              <option value="tmdb">TMDB (via Vidsrc)</option>
               <option value="vidsrc-icu">VidSrc ICU</option>
               <option value="vidsrc-co">VidSrc CO</option>
               <option value="videasy">Videasy</option>
@@ -104,6 +105,14 @@ window.tmdbId = tmdbId;
   if (provider === "vidsrc") {
     const subType = dub === "true" ? "dub" : "sub";
     src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
+  } else if (provider === "tmdb") {
+  if (!window.tmdbId) {
+    frame.src = "";
+    console.warn("TMDB ID not loaded yet.");
+    return;
+  }
+
+  src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}?autoPlay=true`;
   } else if (provider === "vidsrc-icu") {
     // Numeric format: /anime/{id}/{ep}/{dub as 0|1}/{skip as 0|1}
     const dubFlag = dub === "true" ? "1" : "0";
@@ -113,15 +122,7 @@ window.tmdbId = tmdbId;
     src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins`;
   } else if (provider === "videasy") {
     src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
-  } else if (provider === "tmdb") {
-  if (!window.tmdbId) {
-    frame.src = "";
-    console.warn("TMDB ID not loaded yet.");
-    return;
-  }
-
-  src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}?autoPlay=true`;
-}
+  } 
 
 
   console.log("Iframe source URL:", src); // Debug
