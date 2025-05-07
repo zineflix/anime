@@ -11,7 +11,11 @@ if (!animeId) {
     .then(res => res.json())
     .then(data => {
       const anime = data.data;
-      maxEpisodes = anime.episodes || 24; // Fallback to 24 if the count isn't available
+      if (!anime.episodes || anime.status === "Currently Airing") {
+  maxEpisodes = 1000; // or some higher guess value
+} else {
+  maxEpisodes = anime.episodes;
+}
       const episodeSelect = document.createElement('select');
       episodeSelect.id = "episode-select";
       for (let i = 1; i <= maxEpisodes; i++) {
