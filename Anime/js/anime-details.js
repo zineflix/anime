@@ -114,8 +114,13 @@ window.tmdbId = tmdbId;
   } else if (provider === "videasy") {
     src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   } else if (provider === "tmdb") {
-  const season = window.tmdbSeason || 1; // fallback to season 1
-  src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${ep}`;
+  if (!window.tmdbId) {
+    frame.src = "";
+    console.warn("TMDB ID not loaded yet.");
+    return;
+  }
+
+  src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}?autoPlay=true`;
 }
 
 
