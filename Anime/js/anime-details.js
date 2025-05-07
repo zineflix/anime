@@ -195,17 +195,13 @@ src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoP
   frame.src = src;
 }
 
-      // Read More Button Start //
-      const readMoreBtn = document.getElementById("readMoreBtn");
-  const description = document.getElementById("description");
+      const readMoreBtn = document.getElementById('read-more');
+      const description = document.getElementById('description');
 
-  readMoreBtn.addEventListener("click", () => {
-    description.classList.toggle("line-clamp-3");
-    readMoreBtn.textContent = description.classList.contains("line-clamp-3")
-      ? "Read More"
-      : "Read Less";
-  });
-      // Read More Button End //
+      readMoreBtn.addEventListener('click', () => {
+        description.classList.toggle('collapsed');
+        readMoreBtn.textContent = description.classList.contains('collapsed') ? 'Read More' : 'Show Less';
+      });
 
       // Attach event listeners
       document.getElementById('episode-select').addEventListener('change', updateStream);
