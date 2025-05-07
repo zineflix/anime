@@ -14,11 +14,17 @@ if (!animeId) {
       const displayTitle = anime.title_english || anime.title;
 
 // Fetch TMDB data using title
-fetch(`https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(displayTitle)}&api_key=YOUR_TMDB_API_KEY`)
+fetch(`https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(displayTitle)}&api_key=af59fdb730165a736ec8fbe30912caaf`)
   .then(res => res.json())
   .then(tmdbData => {
     if (tmdbData.results && tmdbData.results.length > 0) {
       const tmdbAnime = tmdbData.results[0];
+      const tmdbId = tmdbAnime.id;
+
+// Store globally if needed
+window.tmdbId = tmdbId;
+
+// You may also fetch seasons info if needed
 
       // Optional: You could choose the most accurate match using more filters
 
@@ -77,7 +83,8 @@ fetch(`https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(display
               <option value="vidsrc" selected>VidSrc</option>
               <option value="vidsrc-icu">VidSrc ICU</option>
               <option value="vidsrc-co">VidSrc CO</option>
-              <option value="videasy">Videasy</option>      
+              <option value="videasy">Videasy</option>
+              <option value="tmdb">TMDB (via Vidsrc)</option>
             </select>
           </label>
         </div>
@@ -106,7 +113,11 @@ fetch(`https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(display
     src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins`;
   } else if (provider === "videasy") {
     src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
-  } 
+  } else if (provider === "tmdb") {
+  const season = window.tmdbSeason || 1; // fallback to season 1
+  src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${ep}`;
+}
+
 
   console.log("Iframe source URL:", src); // Debug
   frame.src = src;
