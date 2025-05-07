@@ -197,7 +197,6 @@ src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoP
 }
 
       // Wait for the DOM to update after setting innerHTML
-setTimeout(() => {
   const readMoreBtn = document.getElementById('read-more');
   const description = document.getElementById('description');
 
@@ -207,7 +206,6 @@ setTimeout(() => {
       readMoreBtn.textContent = description.classList.contains('collapsed') ? 'Read More' : 'Show Less';
     });
   }
-}, 0);
 
       // Attach event listeners
       document.getElementById('episode-select').addEventListener('change', updateStream);
