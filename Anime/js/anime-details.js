@@ -2,7 +2,7 @@ const params = new URLSearchParams(window.location.search);
 const animeId = params.get("id");
 const container = document.getElementById("anime-detail");
 
-const maxEpisodes = 24; // You can fetch the episode count dynamically with Jikan if needed
+let maxEpisodes = 1;
 
 if (!animeId) {
   container.innerHTML = "<p>No anime ID provided.</p>";
@@ -11,6 +11,16 @@ if (!animeId) {
     .then(res => res.json())
     .then(data => {
       const anime = data.data;
+      maxEpisodes = anime.episodes || 24; // Fallback to 24 if the count isn't available
+      const episodeSelect = document.createElement('select');
+      episodeSelect.id = "episode-select";
+      for (let i = 1; i <= maxEpisodes; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `Episode ${i}`;
+        episodeSelect.appendChild(option);
+      }
+
       const displayTitle = anime.title_english || anime.title;
 
 // Fetch TMDB data using title
