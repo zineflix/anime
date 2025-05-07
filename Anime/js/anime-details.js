@@ -193,13 +193,28 @@ src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoP
   frame.src = src;
 }
 
-      const readMoreBtn = document.getElementById('read-more');
-      const description = document.getElementById('description');
+      // Read More button Start //
+      const container = document.getElementById("anime-detail");
 
-      readMoreBtn.addEventListener('click', () => {
-        description.classList.toggle('collapsed');
-        readMoreBtn.textContent = description.classList.contains('collapsed') ? 'Read More' : 'Show Less';
-      });
+const observer = new MutationObserver(() => {
+  const readMoreBtn = document.getElementById("read-more");
+  const description = document.getElementById("description");
+
+  if (readMoreBtn && description) {
+    readMoreBtn.addEventListener("click", () => {
+      description.classList.toggle("collapsed");
+      readMoreBtn.textContent = description.classList.contains("collapsed")
+        ? "Read More"
+        : "Show Less";
+    });
+
+    observer.disconnect(); // Stop watching after setting up
+  }
+});
+
+observer.observe(container, { childList: true, subtree: true });
+      // Read More button End //
+
 
       // Attach event listeners
       document.getElementById('episode-select').addEventListener('change', updateStream);
