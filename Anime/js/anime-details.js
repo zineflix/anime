@@ -27,6 +27,47 @@ if (!animeId) {
 
       const displayTitle = anime.title_english || anime.title;
 
+// Fetch similar anime titles from Jikan to find other seasons
+fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(displayTitle)}&limit=20`)
+  .then(res => res.json())
+  .then(searchResults => {
+    const seasonCandidates = searchResults.data.filter(item =>
+      item.title.includes(anime.title.split(" ")[0]) &&  // loosely match first word of title
+      item.type === "TV" &&                               // only TV series
+      item.mal_id !== anime.mal_id                        // exclude current anime
+    );
+
+    if (seasonCandidates.length > 0) {
+      const seasonSelect = document.createElement('select');
+      seasonSelect.innerHTML = `<option disabled selected>Select Season</option>`;
+      seasonSelect.style.margin = '10px';
+      seasonSelect.id = 'season-select';
+
+      // Add current season as well
+      seasonSelect.innerHTML += `<option value="${anime.mal_id}">${displayTitle} (This Season)</option>`;
+
+      seasonCandidates.forEach(entry => {
+        seasonSelect.innerHTML += `<option value="${entry.mal_id}">${entry.title}</option>`;
+      });
+
+      const controlsContainer = document.querySelector('.controls');
+      const label = document.createElement('label');
+      label.innerHTML = "Season: ";
+      label.appendChild(seasonSelect);
+      controlsContainer.prepend(label);
+
+      seasonSelect.addEventListener('change', (e) => {
+        const newId = e.target.value;
+        window.location.href = `anime-details.html?id=${newId}`;
+      });
+    }
+  })
+  .catch(err => {
+    console.warn("Season lookup failed:", err);
+  });
+
+// JIKAN ANIME FETCH END //      
+
 // Fetch TMDB data using title
 fetch(`https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(displayTitle)}&api_key=af59fdb730165a736ec8fbe30912caaf`)
   .then(res => res.json())
