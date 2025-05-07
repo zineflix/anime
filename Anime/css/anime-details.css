@@ -223,13 +223,13 @@ h2 {
 }
 
 
-.anime-description p.collapsed {
+.anime-description #description.collapsed {
   max-height: 100px;
   overflow: hidden;
   position: relative;
 }
 
-.anime-description p.collapsed::after {
+.anime-description #description.collapsed::after {
   content: '';
   position: absolute;
   bottom: 0;
