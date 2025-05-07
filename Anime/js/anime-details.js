@@ -184,14 +184,14 @@ window.tmdbId = tmdbId;
       src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/1/${ep}?autoPlay=true`;
     } else if (provider === "videasy-v1") {
       if (!window.tmdbId) throw "TMDB ID not loaded for Videasy v1";
-      src = `https://player.videasy.net/tv/${window.tmdbId}/1/${ep}${dub === "true" ? "?dub=true&autoplay=true" : "?autoplay=true"}`;
+      src = `https://player.videasy.net/tv/${window.tmdbId}/1/${ep}${dub === "true" ? "?dub=true" : ""}`;
     } else if (provider === "vidsrc-icu") {
       const dubFlag = dub === "true" ? "1" : "0";
-      src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/1?autoplay=true`;
+      src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/1`;
     } else if (provider === "vidsrc-co") {
       src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true`;
     } else if (provider === "videasy-v2") {
-      src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true&autoplay=true" : "?autoplay=true"}`;
+      src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
     }
 
     // Set the iframe source
