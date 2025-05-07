@@ -193,28 +193,13 @@ src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoP
   frame.src = src;
 }
 
-      // Read More button Start //
-      const container = document.getElementById("anime-detail");
+      const readMoreBtn = document.getElementById('read-more');
+      const description = document.getElementById('description');
 
-const observer = new MutationObserver(() => {
-  const readMoreBtn = document.getElementById("read-more");
-  const description = document.getElementById("description");
-
-  if (readMoreBtn && description) {
-    readMoreBtn.addEventListener("click", () => {
-      description.classList.toggle("collapsed");
-      readMoreBtn.textContent = description.classList.contains("collapsed")
-        ? "Read More"
-        : "Show Less";
-    });
-
-    observer.disconnect(); // Stop watching after setting up
-  }
-});
-
-observer.observe(container, { childList: true, subtree: true });
-      // Read More button End //
-
+      readMoreBtn.addEventListener('click', () => {
+        description.classList.toggle('collapsed');
+        readMoreBtn.textContent = description.classList.contains('collapsed') ? 'Read More' : 'Show Less';
+      });
 
       // Attach event listeners
       document.getElementById('episode-select').addEventListener('change', updateStream);
@@ -234,3 +219,27 @@ document.getElementById('menu-toggle').addEventListener('click', () => {
   document.getElementById('nav-links').classList.toggle('active');
 });
 // Menu Bar End //
+
+document.addEventListener("DOMContentLoaded", function () {
+  const container = document.getElementById("anime-detail");
+
+  // Delay to ensure dynamic content has loaded (if necessary)
+  const observer = new MutationObserver(() => {
+    const readMoreBtn = document.getElementById("read-more");
+    const description = document.getElementById("description");
+
+    if (readMoreBtn && description) {
+      readMoreBtn.addEventListener("click", () => {
+        description.classList.toggle("collapsed");
+        readMoreBtn.textContent = description.classList.contains("collapsed")
+          ? "Read More"
+          : "Show Less";
+      });
+
+      // Stop observing after setting the event
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(container, { childList: true, subtree: true });
+});
