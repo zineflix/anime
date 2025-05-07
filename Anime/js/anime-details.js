@@ -142,6 +142,8 @@ if (!animeId) {
             </select>
           </label>
         </div>
+        
+        <p style="color: red; font-weight: bold;"> NOTE: If current server is not working, Please change server! </p>
 
         <iframe id="stream-frame" src="" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin"></iframe>
       `;
