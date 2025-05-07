@@ -7,23 +7,29 @@ let maxEpisodes = 1;
 if (!animeId) {
   container.innerHTML = "<p>No anime ID provided.</p>";
 } else {
-  fetch(`https://api.jikan.moe/v4/anime/${animeId}`)
-    .then(res => res.json())
-    .then(data => {
-      const anime = data.data;
-      if (!anime.episodes || anime.status === "Currently Airing") {
-  maxEpisodes = 9999; // or some higher guess value
-} else {
-  maxEpisodes = anime.episodes;
-}
-      const episodeSelect = document.createElement('select');
-      episodeSelect.id = "episode-select";
-      for (let i = 1; i <= maxEpisodes; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = `Episode ${i}`;
-        episodeSelect.appendChild(option);
-      }
+  fetch(`https://api.jikan.moe/v4/anime/${animeId}/episodes`)
+  .then(res => res.json())
+  .then(episodeData => {
+    const episodes = episodeData.data;
+    maxEpisodes = episodes.length;
+
+    const episodeSelect = document.createElement('select');
+    episodeSelect.id = "episode-select";
+
+    episodes.forEach(ep => {
+      const option = document.createElement('option');
+      option.value = ep.mal_id;
+      option.textContent = `Episode ${ep.mal_id}`;
+      episodeSelect.appendChild(option);
+    });
+
+    document.querySelector('.controls label').appendChild(episodeSelect);
+    updateStream(); // Call after select is populated
+  })
+  .catch(err => {
+    console.warn("Episode fetch failed. Using fallback maxEpisodes = 1", err);
+    maxEpisodes = 1;
+  });
 
       const displayTitle = anime.title_english || anime.title;
 
