@@ -99,6 +99,210 @@
   <p>&copy; 2025 AnimeZone. All rights reserved.</p>
 </footer>
 <!-- Site Footer End -->
+
+<!-- ONLINE STAT WIDGET CODE START -->    
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<!-- Widget Styles -->
+<style>
+  #online-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #111;
+    color: #0ff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: 14px;
+    z-index: 9999;
+    user-select: none;
+    cursor: pointer;
+    overflow: hidden;
+    width: 200px;
+    max-height: 400px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  #online-widget-header {
+    padding: 12px 18px;
+    border-bottom: 1px solid #0ff2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #online-widget-content {
+    padding: 10px 18px;
+    display: none;
+    overflow-y: auto;
+    max-height: 300px;
+  }
+
+  #online-widget.expanded #online-widget-content {
+    display: block;
+  }
+
+  #online-widget-toggle {
+    font-weight: bold;
+    color: #fff;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+  }
+
+  #online-widget.expanded #online-widget-toggle {
+    transform: rotate(180deg);
+  }
+
+  .region-stat {
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 600px) {
+    #online-widget {
+      left: 20px;
+      bottom: 20px;
+      width: 90%;
+      max-width: 180px;
+      font-size: 14px;
+    }
+
+    #online-widget-content {
+      max-height: 250px;
+    }
+
+    .region-stat {
+      font-size: 12px;
+    }
+
+    #online-widget-header {
+      padding: 10px 14px;
+    }
+
+    #online-widget-content {
+      padding: 8px 14px;
+    }
+  }
+</style>
+<!-- Widget HTML -->
+<div id="online-widget">
+  <div id="online-widget-header">
+    👥 <span id="online-count">...</span> online
+    <span id="online-widget-toggle">▲</span>
+  </div>
+  <div id="online-widget-content">
+    🔁 Visits: <span id="visit-count">...</span><br>
+    📊 Peak: <span id="peak-users">...</span><br>
+    🌍 You: <span id="geo-data">loading...</span><br><br>
+    <strong>🌐 Online by Region:</strong>
+    <div id="region-breakdown" class="region-stat">Loading...</div>
+  </div>
+</div>
+
+<!-- JS Logic -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCD_OdnHBBeYNhIPsNsGj3dUihcMbFNju8",
+    authDomain: "i-netplex-fc1d9.firebaseapp.com",
+    databaseURL: "https://i-netplex-fc1d9-default-rtdb.firebaseio.com",
+    projectId: "i-netplex-fc1d9",
+    storageBucket: "i-netplex-fc1d9.firebasestorage.app",
+    messagingSenderId: "833337770599",
+    appId: "1:833337770599:web:3252c3d36343054c1e8ac2"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const presenceRef = db.ref("presence");
+  const visitsRef = db.ref("siteStats/visits");
+  const peakRef = db.ref("siteStats/peakUsers");
+  const sessionsRef = db.ref("siteStats/sessions");
+
+  const localID = localStorage.getItem("netplex_uid") || (() => {
+    const uid = 'user_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem("netplex_uid", uid);
+    return uid;
+  })();
+
+  const myRef = presenceRef.child(localID);
+
+  const sessionStart = Date.now();
+
+  // Fetch geolocation
+  fetch("https://ipinfo.io/json?token=06786be2f40d4d")
+    .then(res => res.json())
+    .then(data => {
+      const location = `${data.city || ''}, ${data.region || ''}`;
+      const country = data.country || "Unknown";
+      const region = data.region || "Unknown";
+      document.getElementById("geo-data").textContent = location;
+
+      // Mark presence with location
+      myRef.set({
+        online: true,
+        country: country,
+        region: region
+      });
+      myRef.onDisconnect().remove();
+    })
+    .catch(() => {
+      document.getElementById("geo-data").textContent = "Unknown";
+      myRef.set({ online: true });
+      myRef.onDisconnect().remove();
+    });
+
+  // Save session time on unload (in background, optional)
+  window.addEventListener("beforeunload", () => {
+    const timeSpent = Math.floor((Date.now() - sessionStart) / 1000);
+    sessionsRef.child(localID).push({ time: timeSpent, timestamp: Date.now() });
+  });
+
+  visitsRef.transaction(val => (val || 0) + 1);
+  visitsRef.on("value", snap => {
+    document.getElementById("visit-count").textContent = snap.val();
+  });
+
+  peakRef.on("value", snap => {
+    document.getElementById("peak-users").textContent = snap.val() || 0;
+  });
+
+  presenceRef.on("value", snap => {
+    const count = snap.numChildren();
+    document.getElementById("online-count").textContent = count;
+
+    peakRef.transaction(peak => (!peak || count > peak) ? count : peak);
+
+    // Group users by country/region
+    const regionStats = {};
+    snap.forEach(child => {
+      const data = child.val();
+      if (data.region && data.country) {
+        const key = `${data.region}, ${data.country}`;
+        regionStats[key] = (regionStats[key] || 0) + 1;
+      }
+    });
+
+    const regionHTML = Object.entries(regionStats)
+      .map(([region, count]) => {
+  const countryCode = region.split(', ').pop().toLowerCase(); // "us"
+  const flagImg = `<img src="https://flagcdn.com/16x12/${countryCode}.png" style="width:16px;height:12px;vertical-align:middle;margin-right:4px">`;
+  return `${flagImg} ${region}: ${count}`;
+})
+
+      .join("<br>");
+    document.getElementById("region-breakdown").innerHTML = regionHTML || "No region data.";
+  });
+
+  // Toggle expand
+  document.getElementById("online-widget-header").addEventListener("click", () => {
+    document.getElementById("online-widget").classList.toggle("expanded");
+  });
+</script>
+<!-- ONLINE STAT WIDGET CODE END -->      
   
 </body>
 </html>
