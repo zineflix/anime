@@ -133,9 +133,9 @@ if (!animeId) {
           <label>
             Provider:
             <select id="provider-select">
-              <option value="videasy-v1" selected>Server 1</option>
+              <option value="vidsrc" selected>Server 1</option>
               <option value="tmdb">Server 2</option>
-              <option value="vidsrc">Server 3</option>
+              <option value="videasy-v1">Server 3</option>
               <option value="vidsrc-icu">Server 4</option>
               <option value="vidsrc-co">Server 5</option>
               <option value="videasy-v2">Server 6</option>
@@ -157,17 +157,10 @@ if (!animeId) {
 
   let src = "";
 
-  if (provider === "videasy-v1") {
-  if (!window.tmdbId) {
-    frame.src = "";
-    console.warn("TMDB ID not loaded yet for Videasy.");
-    return;
-  }
-
-  const season = 1; // You can make this dynamic if needed
-  const episode = ep;
-  src = `https://player.videasy.net/tv/${window.tmdbId}/${season}/${episode}${dub === "true" ? "?dub=true" : ""}`;
-} else if (provider === "tmdb") {
+  if (provider === "vidsrc") {
+    const subType = dub === "true" ? "dub" : "sub";
+    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
+  } else if (provider === "tmdb") {
   if (!window.tmdbId) {
     frame.src = "";
     console.warn("TMDB ID not loaded yet.");
@@ -178,10 +171,17 @@ if (!animeId) {
 const episode = ep; // Use selected episode
 src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
 
-  } else  if (provider === "vidsrc") {
-    const subType = dub === "true" ? "dub" : "sub";
-    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
+  } else if (provider === "videasy-v1") {
+  if (!window.tmdbId) {
+    frame.src = "";
+    console.warn("TMDB ID not loaded yet for Videasy.");
+    return;
   }
+
+  const season = 1; // You can make this dynamic if needed
+  const episode = ep;
+  src = `https://player.videasy.net/tv/${window.tmdbId}/${season}/${episode}${dub === "true" ? "?dub=true" : ""}`;
+}
  else if (provider === "vidsrc-icu") {
     // Numeric format: /anime/{id}/{ep}/{dub as 0|1}/{skip as 0|1}
     const dubFlag = dub === "true" ? "1" : "0";
@@ -229,4 +229,3 @@ document.getElementById('menu-toggle').addEventListener('click', () => {
   document.getElementById('nav-links').classList.toggle('active');
 });
 // Menu Bar End //
-
