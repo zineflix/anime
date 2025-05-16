@@ -8,10 +8,11 @@ body {
 
 /* About Us Section Start*/
 .about-section {
-  margin-top: 150px;
+  margin-top: 15px;
   text-align: center;
   background-color: #121212;
   color: white;
+  padding-top: 100px;
   padding-bottom: 100px;
 }
 
@@ -140,5 +141,3 @@ h2 {
   font-size: 14px;
 }
 /* Footer End */
-
-
