@@ -2,10 +2,10 @@
 const adContainer = document.querySelector('.ads-row');
 
 const adSources = [
-  "https://beddingfetched.com/auasmuxjmw?key=c5441a31ac48e2c6a8daa8bc31f51097",
-  "https://beddingfetched.com/auasmuxjmw?key=c5441a31ac48e2c6a8daa8bc31f51097",
-  "https://beddingfetched.com/t2uad06p?key=83cc6b8e62e8049148b96dc45e536fc3",
-  "https://beddingfetched.com/t2uad06p?key=83cc6b8e62e8049148b96dc45e536fc3"
+  "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+  "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+  "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+  "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2"
 ];
 
 adSources.forEach(src => {
