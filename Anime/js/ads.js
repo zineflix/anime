@@ -1,11 +1,11 @@
-// ads.js
+// ads.js 
 const adContainer = document.querySelector('.ads-row');
 
 const adSources = [
-  "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-  "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-  "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-  "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2"
+  "#",
+  "#",
+  "#",
+  "#"
 ];
 
 adSources.forEach(src => {
