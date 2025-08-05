@@ -78,11 +78,6 @@ if (!animeId) {
             // Store globally if needed
             window.tmdbId = tmdbId;
 
-    // ✅ Now it's safe to call this:
-    updateStream();
-  });
-    
-            
             // Optional: You could choose the most accurate match using more filters
 
             // Append TMDB info
@@ -164,20 +159,20 @@ function updateStream() {
   let src = "";
 
   if (provider === "vidsrc") {
+    const subType = dub === "true" ? "dub" : "sub";
+    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
+  } 
+  
+  else if (provider === "vidsrc-tv") {
     if (!window.tmdbId) {
       frame.src = "";
-      console.warn("TMDB ID not loaded yet for vidsrc.");
+      console.warn("TMDB ID not loaded yet for vidsrc-tv.");
       return;
     }
 
     const season = 1; // Optionally make this dynamic later
     const episode = ep;
     src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
-  } 
-  
-  else if (provider === "vidsrc-tv") {
-    const subType = dub === "true" ? "dub" : "sub";
-    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
   } 
   
   else if (provider === "videasy-v1") {
@@ -212,7 +207,6 @@ function updateStream() {
 
 
 
-
       // Wait for the DOM to update after setting innerHTML
   setTimeout(() => {
   const readMoreBtn = document.getElementById('read-more');
@@ -231,6 +225,8 @@ function updateStream() {
       document.getElementById('dub-select').addEventListener('change', updateStream);
       document.getElementById('provider-select').addEventListener('change', updateStream);
 
+      updateStream(); // Initial call
+    })
     .catch(err => {
       console.error("Anime fetch error:", err);
       container.innerHTML = `<p>Failed to load anime details. Please try again later.</p>`;
