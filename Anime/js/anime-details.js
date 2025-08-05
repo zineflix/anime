@@ -163,24 +163,28 @@ function updateStream() {
     const subType = dub === "true" ? "dub" : "sub";
     src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
 
+    let fallbackTriggered = false;
+
+    // Set iframe src and setup load detection
+    frame.onload = () => {
+      console.log("Iframe loaded successfully.");
+      fallbackTriggered = true;
+    };
+
     frame.src = src;
 
-    // Auto fallback logic for Server 1 after 3 seconds
-    frame.dataset.failed = "false";
-
+    // Set timeout for fallback
     setTimeout(() => {
-      const frameDoc = frame.contentDocument || frame.contentWindow.document;
-      if (!frameDoc || !frameDoc.body || frameDoc.body.innerHTML.trim().length < 10) {
-        if (providerSelect.value === "vidsrc" && frame.dataset.failed !== "true") {
-          console.warn("Server 1 failed, switching to Server 2...");
-          providerSelect.value = "vidsrc-tv";
-          frame.dataset.failed = "true";
-          updateStream();
-        }
+      if (!fallbackTriggered && providerSelect.value === "vidsrc") {
+        console.warn("Server 1 failed to load in 3 seconds. Switching to Server 2...");
+        providerSelect.value = "vidsrc-tv";
+        updateStream();
       }
     }, 3000); // 3 seconds
     return;
   }
+
+  // Continue as before for other providers
 
   else if (provider === "vidsrc-tv") {
     if (!window.tmdbId) {
