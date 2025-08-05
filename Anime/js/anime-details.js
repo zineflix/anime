@@ -149,7 +149,7 @@ if (!animeId) {
       `;
 
       // Streaming setup
-      function updateStream() {
+function updateStream() {
   const ep = document.getElementById('episode-select').value;
   const dub = document.getElementById('dub-select').value;
   const provider = document.getElementById('provider-select').value;
@@ -157,46 +157,67 @@ if (!animeId) {
 
   let src = "";
 
+  const isDub = dub === "true";
+  const subType = isDub ? "dub" : "sub";
+
+  const animeSrc = `https://vidsrc.cc/v2/embed/anime/ani${animeId}/${ep}/${subType}?autoPlay=true`;
+  const tmdbSrc = window.tmdbId
+    ? `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/1/${ep}?autoPlay=true`
+    : null;
+
   if (provider === "vidsrc") {
-    const subType = dub === "true" ? "dub" : "sub";
-    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
-  } else if (provider === "tmdb") {
-  if (!window.tmdbId) {
-    frame.src = "";
-    console.warn("TMDB ID not loaded yet.");
-    return;
+    frame.src = animeSrc;
+
+    // Add fallback if anime fails to load
+    frame.onerror = () => {
+      console.warn("Primary anime stream failed. Trying fallback (TMDB)...");
+      if (tmdbSrc) {
+        frame.src = tmdbSrc;
+      } else {
+        console.warn("TMDB ID not available for fallback.");
+      }
+    };
+
+    // Alternative fallback (based on timeout if onerror doesn't fire)
+    const checkTimeout = setTimeout(() => {
+      const iframeDoc = frame.contentDocument || frame.contentWindow.document;
+      if (iframeDoc && iframeDoc.body.innerHTML.trim().length < 50 && tmdbSrc) {
+        console.warn("Anime stream seems broken, switching to TMDB fallback...");
+        frame.src = tmdbSrc;
+      }
+    }, 8000); // 8-second timeout
   }
 
-  const season = 1; // Set dynamically if needed
-const episode = ep; // Use selected episode
-src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
-
+  // Other providers remain unchanged
+  else if (provider === "tmdb") {
+    if (!window.tmdbId) {
+      frame.src = "";
+      console.warn("TMDB ID not loaded yet.");
+      return;
+    }
+    frame.src = tmdbSrc;
   } else if (provider === "videasy-v1") {
-  if (!window.tmdbId) {
-    frame.src = "";
-    console.warn("TMDB ID not loaded yet for Videasy.");
-    return;
+    if (!window.tmdbId) {
+      frame.src = "";
+      console.warn("TMDB ID not loaded yet for Videasy.");
+      return;
+    }
+    const episode = ep;
+    const season = 1;
+    frame.src = `https://player.videasy.net/tv/${window.tmdbId}/${season}/${episode}${isDub ? "?dub=true" : ""}`;
+  } else if (provider === "vidsrc-icu") {
+    const dubFlag = isDub ? "1" : "0";
+    const skipFlag = "1";
+    frame.src = `https://vidsrc.icu/embed/anime/${animeId}/${ep}/${dubFlag}/${skipFlag}`;
+  } else if (provider === "vidsrc-co") {
+    frame.src = `https://player.vidsrc.co/embed/anime/${animeId}/${ep}?dub=${dub}&autoplay=true`;
+  } else if (provider === "videasy-v2") {
+    frame.src = `https://player.videasy.net/anime/${animeId}/${ep}${isDub ? "?dub=true" : ""}`;
   }
 
-  const season = 1; // You can make this dynamic if needed
-  const episode = ep;
-  src = `https://player.videasy.net/tv/${window.tmdbId}/${season}/${episode}${dub === "true" ? "?dub=true" : ""}`;
+  console.log("Iframe source URL:", frame.src);
 }
- else if (provider === "vidsrc-icu") {
-    // Numeric format: /anime/{id}/{ep}/{dub as 0|1}/{skip as 0|1}
-    const dubFlag = dub === "true" ? "1" : "0";
-    const skipFlag = "1"; // You can make this dynamic too
-    src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/${skipFlag}`;
-  } else if (provider === "vidsrc-co") {
-    src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins`;
-  } else if (provider === "videasy-v2") {
-    src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
-  } 
 
-
-  console.log("Iframe source URL:", src); // Debug
-  frame.src = src;
-}
 
       // Wait for the DOM to update after setting innerHTML
   setTimeout(() => {
