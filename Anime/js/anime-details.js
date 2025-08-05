@@ -159,11 +159,6 @@ function updateStream() {
   let src = "";
 
   if (provider === "vidsrc") {
-    const subType = dub === "true" ? "dub" : "sub";
-    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
-  } 
-  
-  else if (provider === "vidsrc-tv") {
     if (!window.tmdbId) {
       frame.src = "";
       console.warn("TMDB ID not loaded yet for vidsrc-tv.");
@@ -173,6 +168,11 @@ function updateStream() {
     const season = 1; // Optionally make this dynamic later
     const episode = ep;
     src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
+  } 
+  
+  else if (provider === "vidsrc-tv") {
+    const subType = dub === "true" ? "dub" : "sub";
+    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
   } 
   
   else if (provider === "videasy-v1") {
