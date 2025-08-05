@@ -130,17 +130,18 @@ if (!animeId) {
             </select>
           </label>
 
-          <label>
-Provider:
-<select id="provider-select">
-  <option value="vidsrc" selected>Server 1</option>
-  <option value="vidsrc-tv">Server 2</option>
-  <option value="videasy-v1">Server 3</option>
-  <option value="vidsrc-icu">Server 4</option>
-  <option value="vidsrc-co">Server 5</option>
-  <option value="videasy-v2">Server 6</option>
-</select>
-          </label>
+<label>
+  Provider:
+  <select id="provider-select">
+    <option value="vidsrc-tv" selected>Server 1</option>
+    <option value="vidsrc">Server 2</option>
+    <option value="videasy-v1">Server 3</option>
+    <option value="vidsrc-icu">Server 4</option>
+    <option value="vidsrc-co">Server 5</option>
+    <option value="videasy-v2">Server 6</option>
+  </select>
+</label>
+
         </div>
         
         <p style="color: red; font-weight: bold;"> NOTE: If current server is not working, Please change server! </p>
