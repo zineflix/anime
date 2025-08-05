@@ -132,15 +132,14 @@ if (!animeId) {
 
 <label>
   Provider:
-<select id="provider-select">
-  <option value="vidsrc-tv" selected>Server 1</option>
-  <option value="vidsrc-alt">Server 2</option> <!-- formerly vidsrc -->
-  <option value="videasy-v1">Server 3</option>
-  <option value="vidsrc-icu">Server 4</option>
-  <option value="vidsrc-co">Server 5</option>
-  <option value="videasy-v2">Server 6</option>
-</select>
-
+  <select id="provider-select">
+    <option value="vidsrc" selected>Server 1</option>
+    <option value="vidsrc-tv">Server 2</option>
+    <option value="videasy-v1">Server 3</option>
+    <option value="vidsrc-icu">Server 4</option>
+    <option value="vidsrc-co">Server 5</option>
+    <option value="videasy-v2">Server 6</option>
+  </select>
 </label>
 
         </div>
@@ -159,23 +158,22 @@ function updateStream() {
 
   let src = "";
 
-if (provider === "vidsrc") {
-  // Treat vidsrc-tv as the new Server 1
-  if (!window.tmdbId) {
-    frame.src = "";
-    console.warn("TMDB ID not loaded yet for vidsrc-tv.");
-    return;
-  }
+  if (provider === "vidsrc") {
+    const subType = dub === "true" ? "dub" : "sub";
+    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
+  } 
+  
+  else if (provider === "vidsrc-tv") {
+    if (!window.tmdbId) {
+      frame.src = "";
+      console.warn("TMDB ID not loaded yet for vidsrc-tv.");
+      return;
+    }
 
-  const season = 1;
-  const episode = ep;
-  src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
-} else if (provider === "vidsrc-alt") {
-  // Old vidsrc behavior (you can rename it or keep it for backup)
-  const subType = dub === "true" ? "dub" : "sub";
-  src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
-}
-
+    const season = 1; // Optionally make this dynamic later
+    const episode = ep;
+    src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
+  } 
   
   else if (provider === "videasy-v1") {
     if (!window.tmdbId) {
