@@ -231,8 +231,6 @@ function updateStream() {
       document.getElementById('dub-select').addEventListener('change', updateStream);
       document.getElementById('provider-select').addEventListener('change', updateStream);
 
-      updateStream(); // Initial call
-    })
     .catch(err => {
       console.error("Anime fetch error:", err);
       container.innerHTML = `<p>Failed to load anime details. Please try again later.</p>`;
