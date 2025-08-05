@@ -133,8 +133,8 @@ if (!animeId) {
 <label>
   Provider:
   <select id="provider-select">
-    <option value="vidsrc-tv" selected>Server 1</option>
-    <option value="vidsrc">Server 2</option>
+    <option value="vidsrc" selected>Server 1</option>
+    <option value="vidsrc-tv">Server 2</option>
     <option value="videasy-v1">Server 3</option>
     <option value="vidsrc-icu">Server 4</option>
     <option value="vidsrc-co">Server 5</option>
@@ -158,20 +158,24 @@ function updateStream() {
 
   let src = "";
 
-  if (provider === "vidsrc") {
+  if (provider === "vidsrc-tv") {
     const subType = dub === "true" ? "dub" : "sub";
-    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
-  } else if (provider === "vidsrc-tv") {
+    src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
+  } 
+  
+  else if (provider === "vidsrc") {
     if (!window.tmdbId) {
       frame.src = "";
-      console.warn("TMDB ID not loaded yet for vidsrc-tv.");
+      console.warn("TMDB ID not loaded yet for vidsrc.");
       return;
     }
 
     const season = 1; // Optionally make this dynamic later
-    const episode = ep;
-    src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
-  } else if (provider === "videasy-v1") {
+    const episode = ep;    
+    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
+  } 
+  
+  else if (provider === "videasy-v1") {
     if (!window.tmdbId) {
       frame.src = "";
       console.warn("TMDB ID not loaded yet for Videasy.");
@@ -181,13 +185,19 @@ function updateStream() {
     const season = 1;
     const episode = ep;
     src = `https://player.videasy.net/tv/${window.tmdbId}/${season}/${episode}${dub === "true" ? "?dub=true" : ""}`;
-  } else if (provider === "vidsrc-icu") {
+  } 
+  
+  else if (provider === "vidsrc-icu") {
     const dubFlag = dub === "true" ? "1" : "0";
     const skipFlag = "1";
     src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/${skipFlag}`;
-  } else if (provider === "vidsrc-co") {
+  } 
+  
+  else if (provider === "vidsrc-co") {
     src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins`;
-  } else if (provider === "videasy-v2") {
+  } 
+  
+  else if (provider === "videasy-v2") {
     src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   }
 
