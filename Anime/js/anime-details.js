@@ -153,8 +153,7 @@ if (!animeId) {
 function updateStream() {
   const ep = document.getElementById('episode-select').value;
   const dub = document.getElementById('dub-select').value;
-  const providerSelect = document.getElementById('provider-select');
-  const provider = providerSelect.value;
+  const provider = document.getElementById('provider-select').value;
   const frame = document.getElementById('stream-frame');
 
   let src = "";
@@ -162,69 +161,49 @@ function updateStream() {
   if (provider === "vidsrc") {
     const subType = dub === "true" ? "dub" : "sub";
     src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
-
-    // Temporary loader source before we validate
-    frame.src = src;
-
-    // Wait a bit to detect failure
-    const checkTimeout = setTimeout(() => {
-      // If still on Server 1 after 4 seconds, assume failure
-      if (providerSelect.value === "vidsrc") {
-        console.warn("Server 1 appears to be broken. Switching to Server 2...");
-        providerSelect.value = "vidsrc-tv"; // Switch to Server 2
-        updateStream(); // Re-run with new provider
-      }
-    }, 4000); // Adjust timeout if needed
-
-    frame.onload = () => {
-      // Frame loaded successfully, cancel the error timeout
-      clearTimeout(checkTimeout);
-      console.log("Stream iframe loaded.");
-    };
-
-    return; // Exit early since we already set src
-  }
-
-  // Other providers (unchanged)
+  } 
+  
   else if (provider === "vidsrc-tv") {
     if (!window.tmdbId) {
       frame.src = "";
       console.warn("TMDB ID not loaded yet for vidsrc-tv.");
       return;
     }
-    const season = 1;
+
+    const season = 1; // Optionally make this dynamic later
     const episode = ep;
     src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
-  }
-
+  } 
+  
   else if (provider === "videasy-v1") {
     if (!window.tmdbId) {
       frame.src = "";
       console.warn("TMDB ID not loaded yet for Videasy.");
       return;
     }
+
     const season = 1;
     const episode = ep;
     src = `https://player.videasy.net/tv/${window.tmdbId}/${season}/${episode}${dub === "true" ? "?dub=true" : ""}`;
-  }
-
+  } 
+  
   else if (provider === "vidsrc-icu") {
     const dubFlag = dub === "true" ? "1" : "0";
     const skipFlag = "1";
     src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/${skipFlag}`;
-  }
-
+  } 
+  
   else if (provider === "vidsrc-co") {
     src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins`;
-  }
-
+  } 
+  
   else if (provider === "videasy-v2") {
     src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
   }
 
+  console.log("Iframe source URL:", src); // Debug
   frame.src = src;
 }
-
 
 
 
