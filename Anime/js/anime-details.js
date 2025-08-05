@@ -133,8 +133,8 @@ if (!animeId) {
 <label>
   Provider:
   <select id="provider-select">
-    <option value="vidsrc-tv" selected>Server 1</option>
-    <option value="vidsrc">Server 2</option>
+    <option value="vidsrc" selected>Server 1</option>
+    <option value="vidsrc-tv">Server 2</option>
     <option value="videasy-v1">Server 3</option>
     <option value="vidsrc-icu">Server 4</option>
     <option value="vidsrc-co">Server 5</option>
