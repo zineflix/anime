@@ -78,6 +78,11 @@ if (!animeId) {
             // Store globally if needed
             window.tmdbId = tmdbId;
 
+    // ✅ Now it's safe to call this:
+    updateStream();
+  });
+    
+            
             // Optional: You could choose the most accurate match using more filters
 
             // Append TMDB info
