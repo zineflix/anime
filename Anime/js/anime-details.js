@@ -170,7 +170,7 @@ if (!animeId) {
           src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true`;
         } 
         else if (provider === "videasy-v2") {
-          src = `https://player.videasy.net/anime/${anime.anilist_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
+          src = `https://player.videasy.net/anime/${anime.id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
         }
 
         // ✅ Always reset sandbox to ON when switching server/episode/dub
