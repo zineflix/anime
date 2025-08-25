@@ -3,6 +3,7 @@ const animeId = params.get("id");
 const container = document.getElementById("anime-detail");
 
 let maxEpisodes = 1;
+let sandboxEnabled = true; // ✅ global sandbox state
 
 if (!animeId) {
   container.innerHTML = "<p>No anime ID provided.</p>";
@@ -12,30 +13,21 @@ if (!animeId) {
     .then(data => {
       const anime = data.data;
       if (!anime.episodes || anime.status === "Currently Airing") {
-        maxEpisodes = 1500; // or some higher guess value
+        maxEpisodes = 1500;
       } else {
         maxEpisodes = anime.episodes;
       }
 
-      const episodeSelect = document.createElement('select');
-      episodeSelect.id = "episode-select";
-      for (let i = 1; i <= maxEpisodes; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = `Episode ${i}`;
-        episodeSelect.appendChild(option);
-      }
-
       const displayTitle = anime.title_english || anime.title;
 
-      // Fetch similar anime titles from Jikan to find other seasons
+      // Fetch similar anime titles (seasons)
       fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(displayTitle)}&limit=20`)
         .then(res => res.json())
         .then(searchResults => {
           const seasonCandidates = searchResults.data.filter(item =>
-            item.title.includes(anime.title.split(" ")[0]) &&  // loosely match first word of title
-            item.type === "TV" &&                               // only TV series
-            item.mal_id !== anime.mal_id                        // exclude current anime
+            item.title.includes(anime.title.split(" ")[0]) &&
+            item.type === "TV" &&
+            item.mal_id !== anime.mal_id
           );
 
           if (seasonCandidates.length > 0) {
@@ -44,9 +36,7 @@ if (!animeId) {
             seasonSelect.style.margin = '10px';
             seasonSelect.id = 'season-select';
 
-            // Add current season as well
             seasonSelect.innerHTML += `<option value="${anime.mal_id}">${displayTitle} (This Season)</option>`;
-
             seasonCandidates.forEach(entry => {
               seasonSelect.innerHTML += `<option value="${entry.mal_id}">${entry.title}</option>`;
             });
@@ -67,27 +57,17 @@ if (!animeId) {
           console.warn("Season lookup failed:", err);
         });
 
-      // Fetch TMDB data using title
+      // Fetch TMDB data
       fetch(`https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(displayTitle)}&api_key=af59fdb730165a736ec8fbe30912caaf`)
         .then(res => res.json())
         .then(tmdbData => {
           if (tmdbData.results && tmdbData.results.length > 0) {
             const tmdbAnime = tmdbData.results[0];
             const tmdbId = tmdbAnime.id;
-
-            // Store globally if needed
             window.tmdbId = tmdbId;
 
-            // Optional: You could choose the most accurate match using more filters
-
-            // Append TMDB info
             const tmdbRating = tmdbAnime.vote_average;
-            const tmdbPoster = tmdbAnime.poster_path
-              ? `https://image.tmdb.org/t/p/w500${tmdbAnime.poster_path}`
-              : null;
-
             const infoBox = document.querySelector(".anime-info");
-            
             infoBox.innerHTML += `<p><strong>TMDB Rating:</strong> ${tmdbRating}</p>`;
           }
         })
@@ -95,6 +75,7 @@ if (!animeId) {
           console.error("TMDB fetch error:", err);
         });
 
+      // Main container
       container.innerHTML = `
         <div class="anime-content">
           <div class="anime-image">
@@ -104,9 +85,8 @@ if (!animeId) {
             <h1 class="anime-title">${displayTitle}</h1>
             <div class="anime-description">
               <div id="description" class="collapsed">
-  <p>${anime.synopsis || "No description available."}</p>
-</div>
-
+                <p>${anime.synopsis || "No description available."}</p>
+              </div>
               <button id="read-more">Read More</button>
             </div>
           </div>
@@ -130,100 +110,115 @@ if (!animeId) {
             </select>
           </label>
 
-<label>
-  Provider:
-  <select id="provider-select">
-    <option value="vidsrc" selected>Server 1</option>
-    <option value="vidsrc-tv">Server 2</option>
-    <option value="videasy-v1">Server 3</option>
-    <option value="vidsrc-icu">Server 4</option>
-    <option value="vidsrc-co">Server 5</option>
-    <option value="videasy-v2">Server 6</option>
-  </select>
-</label>
+          <label>
+            Provider:
+            <select id="provider-select">
+              <option value="vidsrc" selected>Server 1</option>
+              <option value="vidsrc-tv">Server 2</option>
+              <option value="videasy-v1">Server 3</option>
+              <option value="vidsrc-icu">Server 4</option>
+              <option value="vidsrc-co">Server 5</option>
+              <option value="videasy-v2">Server 6</option>
+            </select>
+          </label>
 
+          <button id="sandbox-toggle" style="background:green;color:white;border-radius:5px;padding:6px 12px;cursor:pointer;">
+            Sandbox: ON
+          </button>
         </div>
         
         <p style="color: red; font-weight: bold;"> NOTE: If current server is not working, Please change server! </p>
 
-        <iframe id="stream-frame" src="" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media" sandbox="allow-scripts allow-same-origin"></iframe>
+        <iframe id="stream-frame" src="" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media"></iframe>
       `;
 
       // Streaming setup
-function updateStream() {
-  const ep = document.getElementById('episode-select').value;
-  const dub = document.getElementById('dub-select').value;
-  const provider = document.getElementById('provider-select').value;
-  const frame = document.getElementById('stream-frame');
+      function updateStream() {
+        const ep = document.getElementById('episode-select').value;
+        const dub = document.getElementById('dub-select').value;
+        const provider = document.getElementById('provider-select').value;
+        const frame = document.getElementById('stream-frame');
+        const sandboxBtn = document.getElementById("sandbox-toggle");
 
-  let src = "";
+        let src = "";
 
-  if (provider === "vidsrc") {
-    const subType = dub === "true" ? "dub" : "sub";
-    src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
-  } 
-  
-  else if (provider === "vidsrc-tv") {
-    if (!window.tmdbId) {
-      frame.src = "";
-      console.warn("TMDB ID not loaded yet for vidsrc-tv.");
-      return;
-    }
+        if (provider === "vidsrc") {
+          const subType = dub === "true" ? "dub" : "sub";
+          src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
+        } 
+        else if (provider === "vidsrc-tv") {
+          if (!window.tmdbId) {
+            frame.src = "";
+            console.warn("TMDB ID not loaded yet for vidsrc-tv.");
+            return;
+          }
+          src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/1/${ep}?autoPlay=true`;
+        } 
+        else if (provider === "videasy-v1") {
+          if (!window.tmdbId) {
+            frame.src = "";
+            console.warn("TMDB ID not loaded yet for Videasy.");
+            return;
+          }
+          src = `https://player.videasy.net/tv/${window.tmdbId}/1/${ep}${dub === "true" ? "?dub=true" : ""}`;
+        } 
+        else if (provider === "vidsrc-icu") {
+          const dubFlag = dub === "true" ? "1" : "0";
+          src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/1`;
+        } 
+        else if (provider === "vidsrc-co") {
+          src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true`;
+        } 
+        else if (provider === "videasy-v2") {
+          src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
+        }
 
-    const season = 1; // Optionally make this dynamic later
-    const episode = ep;
-    src = `https://vidsrc.cc/v2/embed/tv/${window.tmdbId}/${season}/${episode}?autoPlay=true`;
-  } 
-  
-  else if (provider === "videasy-v1") {
-    if (!window.tmdbId) {
-      frame.src = "";
-      console.warn("TMDB ID not loaded yet for Videasy.");
-      return;
-    }
+        // ✅ Always reset sandbox to ON when switching server/episode/dub
+        sandboxEnabled = true;
+        sandboxBtn.textContent = "Sandbox: ON";
+        sandboxBtn.style.background = "green";
 
-    const season = 1;
-    const episode = ep;
-    src = `https://player.videasy.net/tv/${window.tmdbId}/${season}/${episode}${dub === "true" ? "?dub=true" : ""}`;
-  } 
-  
-  else if (provider === "vidsrc-icu") {
-    const dubFlag = dub === "true" ? "1" : "0";
-    const skipFlag = "1";
-    src = `https://vidsrc.icu/embed/anime/${anime.mal_id}/${ep}/${dubFlag}/${skipFlag}`;
-  } 
-  
-  else if (provider === "vidsrc-co") {
-    src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true&nextbutton=true&poster=true&primarycolor=6C63FF&secondarycolor=9F9BFF&iconcolor=FFFFFF&fontcolor=FFFFFF&fontsize=16px&opacity=0.5&font=Poppins`;
-  } 
-  
-  else if (provider === "videasy-v2") {
-    src = `https://player.videasy.net/anime/${anime.mal_id}/${ep}${dub === "true" ? "?dub=true" : ""}`;
-  }
+        frame.setAttribute("sandbox", "allow-scripts allow-same-origin");
+        frame.src = src;
+      }
 
-  console.log("Iframe source URL:", src); // Debug
-  frame.src = src;
-}
+      // Read more toggle
+      setTimeout(() => {
+        const readMoreBtn = document.getElementById('read-more');
+        const description = document.getElementById('description');
+        if (readMoreBtn && description) {
+          readMoreBtn.addEventListener('click', () => {
+            description.classList.toggle('collapsed');
+            readMoreBtn.textContent = description.classList.contains('collapsed') ? 'Read More' : 'Show Less';
+          });
+        }
+      }, 100);
 
-
-
-      // Wait for the DOM to update after setting innerHTML
-  setTimeout(() => {
-  const readMoreBtn = document.getElementById('read-more');
-  const description = document.getElementById('description');
-  if (readMoreBtn && description) {
-    readMoreBtn.addEventListener('click', () => {
-      description.classList.toggle('collapsed');
-      readMoreBtn.textContent = description.classList.contains('collapsed') ? 'Read More' : 'Show Less';
-    });
-  }
-}, 100);
-
-
-      // Attach event listeners
+      // Event listeners
       document.getElementById('episode-select').addEventListener('change', updateStream);
       document.getElementById('dub-select').addEventListener('change', updateStream);
       document.getElementById('provider-select').addEventListener('change', updateStream);
+
+      // Sandbox toggle
+      setTimeout(() => {
+        const sandboxBtn = document.getElementById("sandbox-toggle");
+        const frame = document.getElementById("stream-frame");
+        if (sandboxBtn && frame) {
+          sandboxBtn.addEventListener("click", () => {
+            sandboxEnabled = !sandboxEnabled; // flip state
+            if (sandboxEnabled) {
+              sandboxBtn.textContent = "Sandbox: ON";
+              sandboxBtn.style.background = "green";
+              frame.setAttribute("sandbox", "allow-scripts allow-same-origin");
+            } else {
+              sandboxBtn.textContent = "Sandbox: OFF";
+              sandboxBtn.style.background = "red";
+              frame.removeAttribute("sandbox");
+            }
+            frame.src = frame.src; // refresh iframe to apply
+          });
+        }
+      }, 200);
 
       updateStream(); // Initial call
     })
@@ -233,8 +228,7 @@ function updateStream() {
     });
 }
 
-// Menu Bar Start //
+// Menu Bar
 document.getElementById('menu-toggle').addEventListener('click', () => {
   document.getElementById('nav-links').classList.toggle('active');
 });
-// Menu Bar End //
