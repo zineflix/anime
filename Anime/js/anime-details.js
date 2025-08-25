@@ -144,7 +144,7 @@ if (!animeId) {
 
         if (provider === "vidsrc") {
           const subType = dub === "true" ? "dub" : "sub";
-          src = `https://vidsrc.cc/v2/embed/anime/ani${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
+          src = `https://vidsrc.cc/v2/embed/anime/${anime.mal_id}/${ep}/${subType}?autoPlay=true`;
         } 
         else if (provider === "vidsrc-tv") {
           if (!window.tmdbId) {
