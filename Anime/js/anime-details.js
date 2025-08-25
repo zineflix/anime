@@ -20,7 +20,44 @@ if (!animeId) {
 
       const displayTitle = anime.title_english || anime.title;
 
+      // ==============================
+      // Fetch AniList ID
+      // ==============================
+      fetch("https://graphql.anilist.co", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          query: `
+            query ($search: String) {
+              Media(search: $search, type: ANIME) {
+                id
+                title {
+                  romaji
+                  english
+                }
+              }
+            }
+          `,
+          variables: { search: displayTitle }
+        })
+      })
+      .then(res => res.json())
+      .then(anilistData => {
+        if (anilistData.data && anilistData.data.Media) {
+          window.anilistId = anilistData.data.Media.id;
+          console.log("AniList ID:", window.anilistId);
+        }
+      })
+      .catch(err => {
+        console.error("AniList fetch error:", err);
+      });
+
+      // ==============================
       // Fetch similar anime titles (seasons)
+      // ==============================
       fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(displayTitle)}&limit=20`)
         .then(res => res.json())
         .then(searchResults => {
@@ -57,7 +94,9 @@ if (!animeId) {
           console.warn("Season lookup failed:", err);
         });
 
+      // ==============================
       // Fetch TMDB data
+      // ==============================
       fetch(`https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(displayTitle)}&api_key=af59fdb730165a736ec8fbe30912caaf`)
         .then(res => res.json())
         .then(tmdbData => {
@@ -75,7 +114,9 @@ if (!animeId) {
           console.error("TMDB fetch error:", err);
         });
 
-      // Main container
+      // ==============================
+      // Main container HTML
+      // ==============================
       container.innerHTML = `
         <div class="anime-content">
           <div class="anime-image">
@@ -132,7 +173,9 @@ if (!animeId) {
         <iframe id="stream-frame" src="" width="100%" height="500" allowfullscreen allow="autoplay; encrypted-media"></iframe>
       `;
 
+      // ==============================
       // Streaming setup
+      // ==============================
       function updateStream() {
         const ep = document.getElementById('episode-select').value;
         const dub = document.getElementById('dub-select').value;
@@ -157,7 +200,7 @@ if (!animeId) {
         else if (provider === "videasy-v1") {
           if (!window.tmdbId) {
             frame.src = "";
-            console.warn("TMDB ID not loaded yet for Videasy.");
+            console.warn("TMDB ID not loaded yet for Videasy v1.");
             return;
           }
           src = `https://player.videasy.net/tv/${window.tmdbId}/1/${ep}${dub === "true" ? "?dub=true" : ""}`;
@@ -170,6 +213,11 @@ if (!animeId) {
           src = `https://player.vidsrc.co/embed/anime/${anime.mal_id}/${ep}?dub=${dub}&autoplay=true&autonext=true`;
         } 
         else if (provider === "videasy-v2") {
+          if (!window.anilistId) {
+            frame.src = "";
+            console.warn("AniList ID not loaded yet for Videasy v2.");
+            return;
+          }
           src = `https://player.videasy.net/anime/${window.anilistId}/${ep}${dub === "true" ? "?dub=true" : ""}`;
         }
 
@@ -182,7 +230,9 @@ if (!animeId) {
         frame.src = src;
       }
 
+      // ==============================
       // Read more toggle
+      // ==============================
       setTimeout(() => {
         const readMoreBtn = document.getElementById('read-more');
         const description = document.getElementById('description');
@@ -194,12 +244,16 @@ if (!animeId) {
         }
       }, 100);
 
+      // ==============================
       // Event listeners
+      // ==============================
       document.getElementById('episode-select').addEventListener('change', updateStream);
       document.getElementById('dub-select').addEventListener('change', updateStream);
       document.getElementById('provider-select').addEventListener('change', updateStream);
 
+      // ==============================
       // Sandbox toggle
+      // ==============================
       setTimeout(() => {
         const sandboxBtn = document.getElementById("sandbox-toggle");
         const frame = document.getElementById("stream-frame");
@@ -228,7 +282,9 @@ if (!animeId) {
     });
 }
 
+// ==============================
 // Menu Bar
+// ==============================
 document.getElementById('menu-toggle').addEventListener('click', () => {
   document.getElementById('nav-links').classList.toggle('active');
 });
